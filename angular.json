@@ -105,8 +105,18 @@
           "options": {
             "browserTarget": "mtx-webfront:build"
           }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:jest",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "cdec4404-a7e8-474b-b7e3-dbfc48211f0a"
   }
 }
