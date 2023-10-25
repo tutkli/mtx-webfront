@@ -25,6 +25,7 @@
     "@angular/router": "^16.2.0",
     "cva": "^1.0.0-beta.1",
     "ngxtension": "^0.12.0",
+    "ol": "^8.1.0",
     "rxjs": "~7.8.0",
     "tailwind-merge": "^1.14.0",
     "tslib": "^2.3.0",
