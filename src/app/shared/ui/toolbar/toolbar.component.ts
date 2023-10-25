@@ -9,7 +9,7 @@ import { cva } from '@utils/cva';
 import { type VariantProps } from 'cva';
 import { hostBinding } from 'ngxtension/host-binding';
 
-const toolbar = cva({
+const toolbarVariants = cva({
   base: 'flex items-center gap-2 w-full p-4 font-semibold',
   variants: {
     color: {
@@ -19,7 +19,7 @@ const toolbar = cva({
   },
 });
 
-export type ToolbarVariants = VariantProps<typeof toolbar>;
+export type ToolbarVariants = VariantProps<typeof toolbarVariants>;
 
 @Component({
   selector: 'mtx-toolbar',
@@ -33,10 +33,12 @@ export class ToolbarComponent implements OnChanges {
 
   hostClass = hostBinding(
     'attr.class',
-    signal(toolbar({ color: this.color, className: this.class }))
+    signal(toolbarVariants({ color: this.color, className: this.class }))
   );
 
   ngOnChanges() {
-    this.hostClass.set(toolbar({ color: this.color, className: this.class }));
+    this.hostClass.set(
+      toolbarVariants({ color: this.color, className: this.class })
+    );
   }
 }
