@@ -5,8 +5,8 @@ import { ToolbarComponent } from '@shared/ui/toolbar/toolbar.component';
   selector: 'mtx-root',
   standalone: true,
   imports: [ToolbarComponent],
-  template: `<div class="w-screen h-screen">
-    <mtx-toolbar>
+  template: `<div class="h-screen w-screen">
+    <mtx-toolbar color="primary">
       <span>Mejora tu ciudad</span>
     </mtx-toolbar>
   </div>`,
