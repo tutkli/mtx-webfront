@@ -12,14 +12,16 @@
           "style": "scss",
           "skipTests": false,
           "standalone": true,
-          "changeDetection": "OnPush"
+          "changeDetection": "OnPush",
+          "prefix": "mtx"
         },
         "@schematics/angular:class": {
           "skipTests": false
         },
         "@schematics/angular:directive": {
           "skipTests": false,
-          "standalone": true
+          "standalone": true,
+          "prefix": "mtx"
         },
         "@schematics/angular:guard": {
           "skipTests": false
@@ -77,7 +79,13 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.canary.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
