@@ -22,10 +22,10 @@ import { VariantProps } from 'cva';
 import { hostBinding } from 'ngxtension/host-binding';
 
 const tabsListVariants = cva({
-  base: 'inline-flex items-center justify-center rounded-md bg-muted p-1 text-muted-foreground',
+  base: 'inline-flex items-center justify-center rounded-md bg-muted p-2 text-muted-foreground',
   variants: {
     orientation: {
-      horizontal: 'h-10 space-x-1',
+      horizontal: 'space-x-1',
       vertical: 'mt-2 flex-col h-fit space-y-1',
     },
   },
