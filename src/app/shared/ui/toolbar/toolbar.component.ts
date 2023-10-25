@@ -10,7 +10,7 @@ import { type VariantProps } from 'cva';
 import { hostBinding } from 'ngxtension/host-binding';
 
 const toolbar = cva({
-  base: 'flex items-center gap-2 w-full p-4 font-semibold bg-gray-300',
+  base: 'flex items-center gap-2 w-full p-4 font-semibold bg-secondary text-secondary-foreground',
 });
 
 export type ToolbarVariants = VariantProps<typeof toolbar>;
