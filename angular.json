@@ -21,7 +21,8 @@
         "@schematics/angular:directive": {
           "skipTests": false,
           "standalone": true,
-          "prefix": "mtx"
+          "prefix": "mtx",
+          "flat": false
         },
         "@schematics/angular:guard": {
           "skipTests": false
