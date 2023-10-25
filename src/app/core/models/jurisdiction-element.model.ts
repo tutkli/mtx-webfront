@@ -1,4 +1,5 @@
 import { LocationAdditionalData } from './location-additional-data.model';
+import { MapLayer } from './map-layer.model';
 
 export interface JurisdictionElement {
   map_layers: MapLayer[];
