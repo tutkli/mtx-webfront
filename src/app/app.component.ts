@@ -1,16 +1,10 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
+  selector: 'mtx-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
-  template: `
-    <span class="content">{{ title }}</span>
-  `,
+  imports: [],
+  template: ` <span class="content">Mejora tu Ciudad</span> `,
   styles: [],
 })
-export class AppComponent {
-  title = 'mtx-webfront';
-}
+export class AppComponent {}
