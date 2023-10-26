@@ -14,6 +14,9 @@ import { hostBinding } from 'ngxtension/host-binding';
   standalone: true,
   imports: [CommonModule],
   template: `
+    <h1 class="mb-4 text-xl font-semibold text-primary">
+      Listado de jurisdicciones
+    </h1>
     <button
       *ngFor="let jurisdiction of jurisdictions()"
       (click)="selectJurisdiction(jurisdiction)"
@@ -31,7 +34,7 @@ import { hostBinding } from 'ngxtension/host-binding';
 export class JurisdictionListComponent {
   private hostClass = hostBinding(
     'attr.class',
-    signal('flex w-full flex-col p-4 max-h-full overflow-auto')
+    signal('flex w-full flex-col p-4 max-h-[calc(100%-52px)] overflow-auto')
   );
   private readonly jurisdictionService = inject(JurisdictionService);
 
