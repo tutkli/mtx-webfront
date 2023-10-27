@@ -11,17 +11,17 @@ export class AppConfigurationService {
   );
   private readonly jurisdictionService = inject(JurisdictionService);
 
-  private _appConfigurationsByService = signal<Map<string, AppConfiguration>>(
-    new Map()
-  );
-  public appConfigurationsByService =
-    this._appConfigurationsByService.asReadonly();
+  private _appConfigurationsByJurisdiction = signal<
+    Map<string, AppConfiguration>
+  >(new Map());
+  public appConfigurationsByJurisdiction =
+    this._appConfigurationsByJurisdiction.asReadonly();
 
   public selectedAppConfiguration = computed(() => {
     const selectedJurisdiction =
       this.jurisdictionService.selectedJurisdiction();
     return selectedJurisdiction
-      ? this._appConfigurationsByService().get(
+      ? this._appConfigurationsByJurisdiction().get(
           selectedJurisdiction.jurisdiction_id
         )
       : undefined;
@@ -49,7 +49,7 @@ export class AppConfigurationService {
       for (const appConfig of result) {
         if (appConfig) appConfigMap.set(appConfig.jurisdiction_id, appConfig);
       }
-      this._appConfigurationsByService.set(appConfigMap);
+      this._appConfigurationsByJurisdiction.set(appConfigMap);
     });
   }
 }

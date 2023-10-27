@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { JurisdictionListComponent } from '@pages/root/pages/jurisdiction-list/jurisdiction-list.component';
+import { JurisdictionListComponent } from '@pages/root/pages/list/components/jurisdiction-list/jurisdiction-list.component';
 
 export const rootRoutes: Routes = [
   {

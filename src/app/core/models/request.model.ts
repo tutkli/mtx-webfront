@@ -34,3 +34,9 @@ export interface Request {
   media_url?: string;
   user?: User;
 }
+
+export interface RequestCountLastDays {
+  count: number;
+  jurisdiction_ids: string;
+  last_days: number;
+}

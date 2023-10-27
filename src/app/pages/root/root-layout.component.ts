@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { JurisdictionListComponent } from '@pages/root/pages/jurisdiction-list/jurisdiction-list.component';
+import { JurisdictionListComponent } from '@pages/root/pages/list/components/jurisdiction-list/jurisdiction-list.component';
 import { MapComponent } from '@shared/components/map/map.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ToolbarComponent } from '@shared/ui/toolbar/toolbar.component';
