@@ -10,7 +10,7 @@ export class ThemeService {
   private appConfigurationService = inject(AppConfigurationService);
   private readonly defaultColor = '#7da038';
 
-  appConfiguration = this.appConfigurationService.appConfiguration;
+  appConfiguration = this.appConfigurationService.selectedAppConfiguration;
 
   constructor() {
     effect(() => {

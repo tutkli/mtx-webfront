@@ -48,7 +48,7 @@ export class NavigationButtonsComponent {
   hostClass = hostBinding(
     'attr.class',
     signal(
-      'w-full inline-flex items-center justify-center bg-muted p-2 text-muted-foreground'
+      'w-full border-b border-border shadow-sm inline-flex items-center justify-center bg-muted p-2 text-muted-foreground'
     )
   );
 
