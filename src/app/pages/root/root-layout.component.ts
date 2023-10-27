@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { JurisdictionListComponent } from '@pages/jurisdiction-list/jurisdiction-list.component';
+import { JurisdictionListComponent } from '@pages/root/pages/jurisdiction-list/jurisdiction-list.component';
 import { MapComponent } from '@shared/components/map/map.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ToolbarComponent } from '@shared/ui/toolbar/toolbar.component';
-import { NavigationButtonsComponent } from '@layout/root/components/navigation-buttons/navigation-buttons.component';
+import { NavigationButtonsComponent } from '@pages/root/components/navigation-buttons/navigation-buttons.component';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
