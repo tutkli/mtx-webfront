@@ -5,6 +5,7 @@ import { CardDirective } from '@shared/ui/card/card.directive';
 import { CardTitleDirective } from '@shared/ui/card/card-title.directive';
 import { Jurisdiction } from '@core/models/jurisdiction.model';
 import { AppConfiguration } from '@core/models/app-configuration.model';
+import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
 
 @Component({
   selector: 'mtx-jurisdiction-card',
@@ -14,6 +15,7 @@ import { AppConfiguration } from '@core/models/app-configuration.model';
     CardDirective,
     CardTitleDirective,
     NgForOf,
+    ShortNumberPipe,
   ],
   template: ` <div
     mtxCard
@@ -31,7 +33,7 @@ import { AppConfiguration } from '@core/models/app-configuration.model';
         <p mtxCardDescription>{{ jurisdiction.key_name }}</p>
         <p mtxCardDescription>
           <span class="font-semibold">
-            {{ requestCount }}
+            {{ requestCount | shortNumber }}
           </span>
           reportes
         </p>
@@ -40,7 +42,7 @@ import { AppConfiguration } from '@core/models/app-configuration.model';
     <div
       class="flex h-full w-fit flex-col items-center justify-center self-end bg-muted p-2 text-sm text-muted-foreground">
       <span class="text-2xl font-medium">
-        {{ requestCountLastDays }}
+        {{ requestCountLastDays | shortNumber }}
       </span>
       <span>reportes</span>
       <span class="text-primary">SOLUCIONADOS</span>

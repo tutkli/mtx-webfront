@@ -11,11 +11,12 @@ import { hostBinding } from 'ngxtension/host-binding';
 import { AppConfigurationService } from '@core/services/app-configuration/app-configuration.service';
 import { RequestService } from '@core/services/request/request.service';
 import { JurisdictionCardComponent } from '@pages/root/pages/list/components/jurisdiction-card/jurisdiction-card.component';
+import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
 
 @Component({
   selector: 'mtx-jurisdiction-list',
   standalone: true,
-  imports: [NgForOf, JurisdictionCardComponent],
+  imports: [NgForOf, JurisdictionCardComponent, ShortNumberPipe],
   template: `
     <h1 class="mb-4 text-2xl font-semibold text-primary">
       Listado de jurisdicciones
@@ -32,7 +33,7 @@ import { JurisdictionCardComponent } from '@pages/root/pages/list/components/jur
       <div>
         <h2 class="text-lg">
           <span class="text-2xl font-medium">{{
-            totalRequestCountLastDays()
+            totalRequestCountLastDays() | shortNumber
           }}</span>
           reportes <span class="font-medium text-primary">SOLUCIONADOS*</span>
         </h2>
