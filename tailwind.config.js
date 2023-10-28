@@ -17,9 +17,9 @@ module.exports = {
           DEFAULT: 'var(--secondary)',
           foreground: 'var(--secondary-foreground)',
         },
-        destructive: {
-          DEFAULT: 'var(--destructive)',
-          foreground: 'var(--destructive-foreground)',
+        warn: {
+          DEFAULT: 'var(--warn)',
+          foreground: 'var(--warn-foreground)',
         },
         muted: {
           DEFAULT: 'var(--muted)',
