@@ -14,19 +14,15 @@ export class RequestApiService {
     const params = new HttpParams({
       fromObject: { jurisdiction_ids, limit: '1' },
     });
-    return this.http
-      .get<number>(endpoint, { params, observe: 'response' })
-      .pipe(
-        map(res => {
-          const count = res.headers.get('x-last-page');
-          return count ? parseInt(count, 10) : 0;
-        })
-      );
+    return this.http.get<number>(endpoint, { params, observe: 'response' }).pipe(
+      map(res => {
+        const count = res.headers.get('x-last-page');
+        return count ? parseInt(count, 10) : 0;
+      })
+    );
   }
 
-  getRequestCountLastDays(
-    jurisdiction_ids: string[]
-  ): Observable<RequestCountLastDays> {
+  getRequestCountLastDays(jurisdiction_ids: string[]): Observable<RequestCountLastDays> {
     const endpoint = `${this.baseUrl}/request/count_last_days`;
     const params = new HttpParams({
       fromObject: { jurisdiction_ids, last_days: 30 },

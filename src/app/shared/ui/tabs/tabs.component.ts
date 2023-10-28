@@ -31,10 +31,7 @@ export class TabsComponent {
   }
   $orientation = this._orientation.asReadonly();
 
-  protected readonly _direction = hostBinding(
-    'attr.dir',
-    signal<TabsDirection>('ltr')
-  );
+  protected readonly _direction = hostBinding('attr.dir', signal<TabsDirection>('ltr'));
   @Input()
   set direction(value: TabsDirection) {
     this._direction.set(value);

@@ -6,9 +6,7 @@ import { hostBinding } from 'ngxtension/host-binding';
 const alertDescriptionVariants = cva({
   base: 'text-sm [&_p]:leading-relaxed',
 });
-export type AlertDescriptionVariants = VariantProps<
-  typeof alertDescriptionVariants
->;
+export type AlertDescriptionVariants = VariantProps<typeof alertDescriptionVariants>;
 
 @Directive({
   selector: '[mtxAlertDesc],[mtxAlertDescription]',

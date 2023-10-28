@@ -37,8 +37,6 @@ export class ToolbarComponent implements OnChanges {
   );
 
   ngOnChanges() {
-    this.hostClass.set(
-      toolbarVariants({ color: this.color, className: this.class })
-    );
+    this.hostClass.set(toolbarVariants({ color: this.color, className: this.class }));
   }
 }

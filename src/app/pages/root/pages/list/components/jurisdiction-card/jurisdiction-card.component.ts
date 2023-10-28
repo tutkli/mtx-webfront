@@ -47,9 +47,7 @@ import { TranslocoPipe } from '@ngneat/transloco';
         {{ requestCountLastDays | shortNumber }}
       </span>
       <span>{{ 'list.requests' | transloco }}</span>
-      <span class="text-primary">{{
-        'list.requests-resolved' | transloco
-      }}</span>
+      <span class="text-primary">{{ 'list.requests-resolved' | transloco }}</span>
     </div>
   </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush,

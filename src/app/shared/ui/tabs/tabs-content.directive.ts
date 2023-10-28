@@ -37,9 +37,7 @@ export class TabsContentDirective implements OnChanges {
   private _key: string | undefined;
   protected contentId: string | undefined;
   protected labelId: string | undefined;
-  protected readonly _isSelected = computed(
-    () => this._root.$value() === this._key
-  );
+  protected readonly _isSelected = computed(() => this._root.$value() === this._key);
 
   @Input('mtxTabsContent')
   set contentFor(key: string) {

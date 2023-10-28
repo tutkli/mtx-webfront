@@ -43,9 +43,7 @@ export class TabsTriggerDirective implements OnChanges {
   protected contentId: string | undefined;
   protected labelId: string | undefined;
   protected readonly _orientation = this._root.$orientation;
-  protected readonly _isSelected = computed(
-    () => this._root.$value() === this._key
-  );
+  protected readonly _isSelected = computed(() => this._root.$value() === this._key);
 
   @Input('mtxTabsTrigger')
   set triggerFor(key: string) {

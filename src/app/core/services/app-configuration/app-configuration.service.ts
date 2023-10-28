@@ -6,24 +6,19 @@ import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.se
 
 @Injectable({ providedIn: 'root' })
 export class AppConfigurationService {
-  private readonly appConfigurationApiService = inject(
-    AppConfigurationApiService
-  );
+  private readonly appConfigurationApiService = inject(AppConfigurationApiService);
   private readonly jurisdictionService = inject(JurisdictionService);
 
-  private _appConfigurationsByJurisdiction = signal<
-    Map<string, AppConfiguration>
-  >(new Map());
+  private _appConfigurationsByJurisdiction = signal<Map<string, AppConfiguration>>(
+    new Map()
+  );
   public appConfigurationsByJurisdiction =
     this._appConfigurationsByJurisdiction.asReadonly();
 
   public selectedAppConfiguration = computed(() => {
-    const selectedJurisdiction =
-      this.jurisdictionService.selectedJurisdiction();
+    const selectedJurisdiction = this.jurisdictionService.selectedJurisdiction();
     return selectedJurisdiction
-      ? this._appConfigurationsByJurisdiction().get(
-          selectedJurisdiction.jurisdiction_id
-        )
+      ? this._appConfigurationsByJurisdiction().get(selectedJurisdiction.jurisdiction_id)
       : undefined;
   });
 

@@ -9,19 +9,17 @@ export class RequestService {
   private readonly jurisdictionService = inject(JurisdictionService);
 
   private _requestCountsByJurisdiction = signal<Map<string, number>>(new Map());
-  public requestCountsByJurisdiction =
-    this._requestCountsByJurisdiction.asReadonly();
+  public requestCountsByJurisdiction = this._requestCountsByJurisdiction.asReadonly();
 
-  private _requestCountLastDaysByJurisdiction = signal<Map<string, number>>(
-    new Map()
-  );
+  private _requestCountLastDaysByJurisdiction = signal<Map<string, number>>(new Map());
   public requestCountLastDaysByJurisdiction =
     this._requestCountLastDaysByJurisdiction.asReadonly();
 
   public totalRequestCountLastDays = computed(() => {
-    return Array.from(
-      this.requestCountLastDaysByJurisdiction().values()
-    ).reduce((a, b) => a + b, 0);
+    return Array.from(this.requestCountLastDaysByJurisdiction().values()).reduce(
+      (a, b) => a + b,
+      0
+    );
   });
 
   constructor() {

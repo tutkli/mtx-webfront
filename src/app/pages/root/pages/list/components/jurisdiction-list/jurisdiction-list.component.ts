@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { NgForOf } from '@angular/common';
 import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
 import { Jurisdiction } from '@core/models/jurisdiction.model';
@@ -49,13 +44,9 @@ import { TranslocoPipe } from '@ngneat/transloco';
       <mtx-jurisdiction-card
         *ngFor="let jurisdiction of jurisdictions()"
         (click)="selectJurisdiction(jurisdiction)"
-        (keyup.enter)="
-          $event.preventDefault(); selectJurisdiction(jurisdiction)
-        "
+        (keyup.enter)="$event.preventDefault(); selectJurisdiction(jurisdiction)"
         [jurisdiction]="jurisdiction"
-        [requestCount]="
-          requestCountsByJurisdiction().get(jurisdiction.jurisdiction_id)
-        "
+        [requestCount]="requestCountsByJurisdiction().get(jurisdiction.jurisdiction_id)"
         [requestCountLastDays]="
           requestCountLastDaysByJurisdiction().get(jurisdiction.jurisdiction_id)
         "

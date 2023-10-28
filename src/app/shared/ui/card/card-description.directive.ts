@@ -6,9 +6,7 @@ import { hostBinding } from 'ngxtension/host-binding';
 const cardDescriptionVariants = cva({
   base: 'text-sm text-muted-foreground',
 });
-export type CardDescriptionVariants = VariantProps<
-  typeof cardDescriptionVariants
->;
+export type CardDescriptionVariants = VariantProps<typeof cardDescriptionVariants>;
 
 @Directive({
   selector: '[mtxCardDescription]',

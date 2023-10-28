@@ -1,16 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
 import { HotToastRef } from '@ngneat/hot-toast';
 import { IconName, NgIcon, provideIcons } from '@ng-icons/core';
-import {
-  AlertDirective,
-  AlertVariants,
-} from '@shared/ui/alert/alert.directive';
+import { AlertDirective, AlertVariants } from '@shared/ui/alert/alert.directive';
 import { AlertTitleDirective } from '@shared/ui/alert/alert-title.directive';
 import { AlertDescriptionDirective } from '@shared/ui/alert/alert-description.directive';
 import { AlertIconDirective } from '@shared/ui/alert/alert-icon.directive';
