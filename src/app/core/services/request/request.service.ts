@@ -1,70 +1,51 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
+import { Request } from '@core/models/request.model';
 import { RequestApiService } from '@core/api/request/request-api.service';
-import { combineLatest } from 'rxjs';
+import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
+
+export interface RequestListState {
+  page: number;
+  limit: number;
+  loading: boolean;
+}
+
+const defaultState: RequestListState = {
+  page: 1,
+  limit: 30,
+  loading: false,
+};
 
 @Injectable({ providedIn: 'root' })
 export class RequestService {
   private readonly requestApiService = inject(RequestApiService);
   private readonly jurisdictionService = inject(JurisdictionService);
 
-  private _requestCountsByJurisdiction = signal<Map<string, number>>(new Map());
-  public requestCountsByJurisdiction = this._requestCountsByJurisdiction.asReadonly();
+  private _requestListState = signal<RequestListState>(defaultState);
+  public requestListState = this._requestListState.asReadonly();
 
-  private _requestCountLastDaysByJurisdiction = signal<Map<string, number>>(new Map());
-  public requestCountLastDaysByJurisdiction =
-    this._requestCountLastDaysByJurisdiction.asReadonly();
+  public loading = computed(() => this.requestListState().loading);
 
-  public totalRequestCountLastDays = computed(() => {
-    return Array.from(this.requestCountLastDaysByJurisdiction().values()).reduce(
-      (a, b) => a + b,
-      0
-    );
-  });
+  private _requests = signal<Request[]>([]);
+  public requests = this._requests.asReadonly();
 
   constructor() {
     effect(() => {
-      this.getRequestCountsByJurisdiction(
-        this.jurisdictionService
-          .jurisdictions()
-          .map(jurisdiction => jurisdiction.jurisdiction_id)
-      );
-    });
-
-    effect(() => {
-      this.getRequestCountLastDaysByJurisdiction(
-        this.jurisdictionService
-          .jurisdictions()
-          .map(jurisdiction => jurisdiction.jurisdiction_id)
-      );
+      const selectedJurisdiction = this.jurisdictionService.selectedJurisdiction();
+      if (selectedJurisdiction) {
+        this.requestApiService
+          .getRequests(
+            [selectedJurisdiction.jurisdiction_id],
+            this._requestListState().limit,
+            this._requestListState().page
+          )
+          .subscribe(requests =>
+            this._requests.update(current => [...requests, ...current])
+          );
+      }
     });
   }
 
-  getRequestCountsByJurisdiction(jurisdictionIds: string[]): void {
-    combineLatest(
-      jurisdictionIds.map(jurisdictionId =>
-        this.requestApiService.getRequestsCount([jurisdictionId])
-      )
-    ).subscribe(result => {
-      const requestCountMap = new Map<string, number>();
-      for (const [i, count] of result.entries()) {
-        requestCountMap.set(jurisdictionIds[i], count);
-      }
-      this._requestCountsByJurisdiction.set(requestCountMap);
-    });
-  }
-
-  getRequestCountLastDaysByJurisdiction(jurisdictionIds: string[]): void {
-    combineLatest(
-      jurisdictionIds.map(jurisdictionId =>
-        this.requestApiService.getRequestCountLastDays([jurisdictionId])
-      )
-    ).subscribe(result => {
-      const requestCountMap = new Map<string, number>();
-      for (const [i, countLastDays] of result.entries()) {
-        requestCountMap.set(jurisdictionIds[i], countLastDays.count);
-      }
-      this._requestCountLastDaysByJurisdiction.set(requestCountMap);
-    });
+  setListState(state: Partial<RequestListState>): void {
+    this._requestListState.update(current => ({ ...state, ...current }));
   }
 }

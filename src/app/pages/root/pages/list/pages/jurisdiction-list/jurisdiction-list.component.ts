@@ -4,10 +4,10 @@ import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.se
 import { Jurisdiction } from '@core/models/jurisdiction.model';
 import { hostBinding } from 'ngxtension/host-binding';
 import { AppConfigurationService } from '@core/services/app-configuration/app-configuration.service';
-import { RequestService } from '@core/services/request/request.service';
-import { JurisdictionCardComponent } from '@pages/root/pages/list/components/jurisdiction-card/jurisdiction-card.component';
+import { JurisdictionCardComponent } from '@pages/root/pages/list/pages/jurisdiction-list/components/jurisdiction-card/jurisdiction-card.component';
 import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
 import { TranslocoPipe } from '@ngneat/transloco';
+import { JurisdictionListService } from '@pages/root/pages/list/pages/jurisdiction-list/jurisdiction-list.service';
 
 @Component({
   selector: 'mtx-jurisdiction-list',
@@ -66,15 +66,15 @@ export class JurisdictionListComponent {
   );
   private readonly jurisdictionService = inject(JurisdictionService);
   private readonly appConfigurationService = inject(AppConfigurationService);
-  private readonly requestService = inject(RequestService);
+  private readonly jurisdictionListService = inject(JurisdictionListService);
 
   jurisdictions = this.jurisdictionService.jurisdictions;
   appConfigurationsByJurisdiction =
     this.appConfigurationService.appConfigurationsByJurisdiction;
-  requestCountsByJurisdiction = this.requestService.requestCountsByJurisdiction;
+  requestCountsByJurisdiction = this.jurisdictionListService.requestCountsByJurisdiction;
   requestCountLastDaysByJurisdiction =
-    this.requestService.requestCountLastDaysByJurisdiction;
-  totalRequestCountLastDays = this.requestService.totalRequestCountLastDays;
+    this.jurisdictionListService.requestCountLastDaysByJurisdiction;
+  totalRequestCountLastDays = this.jurisdictionListService.totalRequestCountLastDays;
 
   selectJurisdiction(jurisdiction: Jurisdiction): void {
     this.jurisdictionService.selectJurisdiction(jurisdiction);
