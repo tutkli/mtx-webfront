@@ -29,20 +29,25 @@ export class RequestService {
   public requests = this._requests.asReadonly();
 
   constructor() {
-    effect(() => {
-      const selectedJurisdiction = this.jurisdictionService.selectedJurisdiction();
-      if (selectedJurisdiction) {
-        this.requestApiService
-          .getRequests(
-            [selectedJurisdiction.jurisdiction_id],
-            this._requestListState().limit,
-            this._requestListState().page
-          )
-          .subscribe(requests =>
-            this._requests.update(current => [...requests, ...current])
-          );
-      }
-    });
+    effect(
+      () => {
+        const selectedJurisdiction = this.jurisdictionService.selectedJurisdiction();
+        if (selectedJurisdiction) {
+          this.requestApiService
+            .getRequests(
+              [selectedJurisdiction.jurisdiction_id],
+              this._requestListState().limit,
+              this._requestListState().page
+            )
+            .subscribe(requests =>
+              this._requests.update(current => [...requests, ...current])
+            );
+        } else {
+          this._requests.set([]);
+        }
+      },
+      { allowSignalWrites: true }
+    );
   }
 
   setListState(state: Partial<RequestListState>): void {
