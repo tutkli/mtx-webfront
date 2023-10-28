@@ -6,6 +6,7 @@ import { CardTitleDirective } from '@shared/ui/card/card-title.directive';
 import { Jurisdiction } from '@core/models/jurisdiction.model';
 import { AppConfiguration } from '@core/models/app-configuration.model';
 import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'mtx-jurisdiction-card',
@@ -16,6 +17,7 @@ import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
     CardTitleDirective,
     NgForOf,
     ShortNumberPipe,
+    TranslocoPipe,
   ],
   template: ` <div
     mtxCard
@@ -35,7 +37,7 @@ import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
           <span class="font-semibold">
             {{ requestCount | shortNumber }}
           </span>
-          reportes
+          {{ 'list.requests' | transloco }}
         </p>
       </div>
     </div>
@@ -44,8 +46,10 @@ import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
       <span class="text-2xl font-medium">
         {{ requestCountLastDays | shortNumber }}
       </span>
-      <span>reportes</span>
-      <span class="text-primary">SOLUCIONADOS</span>
+      <span>{{ 'list.requests' | transloco }}</span>
+      <span class="text-primary">{{
+        'list.requests-resolved' | transloco
+      }}</span>
     </div>
   </div>`,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -12,14 +12,15 @@ import { AppConfigurationService } from '@core/services/app-configuration/app-co
 import { RequestService } from '@core/services/request/request.service';
 import { JurisdictionCardComponent } from '@pages/root/pages/list/components/jurisdiction-card/jurisdiction-card.component';
 import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
+import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
   selector: 'mtx-jurisdiction-list',
   standalone: true,
-  imports: [NgForOf, JurisdictionCardComponent, ShortNumberPipe],
+  imports: [NgForOf, JurisdictionCardComponent, ShortNumberPipe, TranslocoPipe],
   template: `
     <h1 class="mb-4 text-2xl font-semibold text-primary">
-      Listado de jurisdicciones
+      {{ 'list.jurisdiction-list' | transloco }}
     </h1>
     <div class="flex space-x-4">
       <div>
@@ -28,16 +29,19 @@ import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
           alt="A man with a thumbs up"
           width="100"
           height="100" />
-        <span class="text-sm">*Últimos 30 días</span>
+        <span class="text-sm">{{ 'list.last-days' | transloco }}</span>
       </div>
       <div>
         <h2 class="text-lg">
           <span class="text-2xl font-medium">{{
             totalRequestCountLastDays() | shortNumber
           }}</span>
-          reportes <span class="font-medium text-primary">SOLUCIONADOS*</span>
+          {{ 'list.requests' | transloco }}
+          <span class="font-medium text-primary">{{
+            'list.requests-resolved' | transloco
+          }}</span>
         </h2>
-        <span class="text-sm">Seguimos trabajando para mejorar</span>
+        <span class="text-sm">{{ 'list.keep-working' | transloco }}</span>
       </div>
     </div>
 
