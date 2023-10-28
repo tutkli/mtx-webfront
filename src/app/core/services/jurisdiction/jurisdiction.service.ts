@@ -30,7 +30,7 @@ export class JurisdictionService {
       });
   }
 
-  selectJurisdiction(jurisdiction: Jurisdiction): void {
+  selectJurisdiction(jurisdiction?: Jurisdiction): void {
     this._selectedJurisdiction.set(jurisdiction);
   }
 }

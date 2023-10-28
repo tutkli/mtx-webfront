@@ -70,6 +70,11 @@ export class MapComponent implements AfterViewInit {
   }
 
   private loadRequestMarkers(requests: Request[]) {
+    if (requests.length === 0) {
+      this.requestsLayer.getSource()?.clear();
+      return;
+    }
+
     const markers = requests.map(request => {
       const marker = new Feature({
         geometry: new Point([request.long, request.lat]),
