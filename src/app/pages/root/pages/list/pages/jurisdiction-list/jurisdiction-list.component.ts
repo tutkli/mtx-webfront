@@ -7,7 +7,7 @@ import { AppConfigurationService } from '@core/services/app-configuration/app-co
 import { JurisdictionCardComponent } from '@pages/root/pages/list/pages/jurisdiction-list/components/jurisdiction-card/jurisdiction-card.component';
 import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
 import { TranslocoPipe } from '@ngneat/transloco';
-import { JurisdictionListService } from '@pages/root/pages/list/pages/jurisdiction-list/jurisdiction-list.service';
+import { JurisdictionListService } from '@pages/root/pages/list/pages/jurisdiction-list/services/jurisdiction-list.service';
 
 @Component({
   selector: 'mtx-jurisdiction-list',
@@ -77,6 +77,6 @@ export class JurisdictionListComponent {
   totalRequestCountLastDays = this.jurisdictionListService.totalRequestCountLastDays;
 
   selectJurisdiction(jurisdiction: Jurisdiction): void {
-    this.jurisdictionService.selectJurisdiction(jurisdiction);
+    this.jurisdictionService.updateJurisdiction(jurisdiction);
   }
 }

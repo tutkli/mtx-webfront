@@ -4,9 +4,7 @@ import { Router } from '@angular/router';
 import { RequestApiService } from '@core/api/request/request-api.service';
 import { combineLatest } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class JurisdictionListService {
   private readonly jurisdictionService = inject(JurisdictionService);
   private readonly requestApiService = inject(RequestApiService);
@@ -26,31 +24,29 @@ export class JurisdictionListService {
     );
   });
 
-  constructor() {
-    effect(() => {
-      if (this.jurisdictionService.selectedJurisdiction()) {
-        this.router.navigate(['list', 'requests']).then();
-      }
-    });
+  private redirectToRequestsList = effect(() => {
+    if (this.jurisdictionService.selectedJurisdiction()) {
+      this.router.navigate(['list', 'requests']).then();
+    }
+  });
 
-    effect(() => {
-      this.getRequestCountsByJurisdiction(
-        this.jurisdictionService
-          .jurisdictions()
-          .map(jurisdiction => jurisdiction.jurisdiction_id)
-      );
-    });
+  private loadRequestCounts = effect(() => {
+    this.getRequestCountsByJurisdiction(
+      this.jurisdictionService
+        .jurisdictions()
+        .map(jurisdiction => jurisdiction.jurisdiction_id)
+    );
+  });
 
-    effect(() => {
-      this.getRequestCountLastDaysByJurisdiction(
-        this.jurisdictionService
-          .jurisdictions()
-          .map(jurisdiction => jurisdiction.jurisdiction_id)
-      );
-    });
-  }
+  private loadRequestCountLastDays = effect(() => {
+    this.getRequestCountLastDaysByJurisdiction(
+      this.jurisdictionService
+        .jurisdictions()
+        .map(jurisdiction => jurisdiction.jurisdiction_id)
+    );
+  });
 
-  getRequestCountsByJurisdiction(jurisdictionIds: string[]): void {
+  private getRequestCountsByJurisdiction(jurisdictionIds: string[]): void {
     combineLatest(
       jurisdictionIds.map(jurisdictionId =>
         this.requestApiService.getRequestCount([jurisdictionId])
@@ -64,7 +60,7 @@ export class JurisdictionListService {
     });
   }
 
-  getRequestCountLastDaysByJurisdiction(jurisdictionIds: string[]): void {
+  private getRequestCountLastDaysByJurisdiction(jurisdictionIds: string[]): void {
     combineLatest(
       jurisdictionIds.map(jurisdictionId =>
         this.requestApiService.getRequestCountLastDays([jurisdictionId])

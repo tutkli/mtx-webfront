@@ -3,9 +3,8 @@ import { MapComponent } from '@shared/components/map/map.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ToolbarComponent } from '@shared/ui/toolbar/toolbar.component';
 import { NavigationButtonsComponent } from '@pages/root/components/navigation-buttons/navigation-buttons.component';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { AppConfigurationService } from '@core/services/app-configuration/app-configuration.service';
-import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
 import { provideIcons } from '@ng-icons/core';
 import { lucideBuilding2 } from '@ng-icons/lucide';
 
@@ -53,20 +52,12 @@ import { lucideBuilding2 } from '@ng-icons/lucide';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RootLayoutComponent {
-  private readonly jurisdictionService = inject(JurisdictionService);
   private readonly appConfigurationService = inject(AppConfigurationService);
-  private router = inject(Router);
 
-  selectedJurisdiction = this.jurisdictionService.selectedJurisdiction;
   selectedAppConfiguration = this.appConfigurationService.selectedAppConfiguration;
 
   readonly defaultData = {
     title: 'Mejora tu ciudad',
     logo: 'assets/images/mtx_white.png',
   };
-
-  unselectJurisdiction(): void {
-    this.jurisdictionService.selectJurisdiction();
-    this.router.navigate(['list', 'jurisdictions']);
-  }
 }

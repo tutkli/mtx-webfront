@@ -5,8 +5,9 @@ export function initializeApp(
   jurisdictionService: JurisdictionService,
   themeService: ThemeService
 ) {
-  return new Promise<void>(resolve => {
-    jurisdictionService.init();
-    resolve();
-  });
+  return () =>
+    new Promise<void>(resolve => {
+      jurisdictionService.init();
+      resolve();
+    });
 }
