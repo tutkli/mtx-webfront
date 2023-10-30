@@ -5,6 +5,7 @@ import {
   effect,
   ElementRef,
   inject,
+  signal,
   ViewChild,
 } from '@angular/core';
 import TileLayer from 'ol/layer/Tile';
@@ -23,12 +24,17 @@ import {
 } from '@utils/map/map-styles.utils';
 import { useGeographic } from 'ol/proj';
 import { isJurisdictionFeature } from '@utils/map/map-features.utils';
+import { MapZoomControlsComponent } from '@shared/components/map-zoom-controls/map-zoom-controls.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'mtx-map',
   standalone: true,
-  imports: [],
-  template: `<div id="ol-map" class="h-full w-full"></div>`,
+  imports: [MapZoomControlsComponent, NgIf],
+  template: `
+    <mtx-map-zoom-controls *ngIf="showControls()" [map]="map" />
+    <div id="ol-map" class="relative h-full w-full"></div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapComponent implements AfterViewInit {
@@ -38,6 +44,8 @@ export class MapComponent implements AfterViewInit {
   private jurisdictions = this.jurisdictionService.jurisdictions;
   private selectedJurisdiction = this.jurisdictionService.selectedJurisdiction;
   private requests = this.requestService.requests;
+
+  showControls = signal(false);
 
   @ViewChild('ol-map') mapElement!: ElementRef<HTMLDivElement>;
   map!: Map;
@@ -49,6 +57,7 @@ export class MapComponent implements AfterViewInit {
     this.initMap();
     this.initLayers();
     this.addClickInteraction();
+    this.showControls.set(true);
   }
 
   private loadJurisdictionMapLayers = effect(() => {
