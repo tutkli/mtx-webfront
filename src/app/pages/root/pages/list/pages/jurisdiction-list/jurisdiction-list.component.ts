@@ -5,40 +5,17 @@ import { Jurisdiction } from '@core/models/jurisdiction.model';
 import { hostBinding } from 'ngxtension/host-binding';
 import { AppConfigurationService } from '@core/services/app-configuration/app-configuration.service';
 import { JurisdictionCardComponent } from '@pages/root/pages/list/pages/jurisdiction-list/components/jurisdiction-card/jurisdiction-card.component';
-import { ShortNumberPipe } from '@shared/pipes/short-number/short-number.pipe';
-import { TranslocoPipe } from '@ngneat/transloco';
-import { JurisdictionListService } from '@pages/root/pages/list/pages/jurisdiction-list/services/jurisdiction-list.service';
+import { ListService } from '@pages/root/pages/list/services/list.service';
+import { ListHeaderComponent } from '@pages/root/pages/list/components/list-header/list-header.component';
 
 @Component({
   selector: 'mtx-jurisdiction-list',
   standalone: true,
-  imports: [NgForOf, JurisdictionCardComponent, ShortNumberPipe, TranslocoPipe],
+  imports: [NgForOf, JurisdictionCardComponent, ListHeaderComponent],
   template: `
-    <h1 class="mb-4 text-2xl font-semibold text-primary">
-      {{ 'list.jurisdiction-list' | transloco }}
-    </h1>
-    <div class="flex space-x-4">
-      <div>
-        <img
-          src="assets/images/resolved.png"
-          alt="A man with a thumbs up"
-          width="100"
-          height="100" />
-        <span class="text-sm">{{ 'list.last-days' | transloco }}</span>
-      </div>
-      <div>
-        <h2 class="text-lg">
-          <span class="text-2xl font-medium">{{
-            totalRequestCountLastDays() | shortNumber
-          }}</span>
-          {{ 'list.requests' | transloco }}
-          <span class="font-medium text-primary">{{
-            'list.requests-resolved' | transloco
-          }}</span>
-        </h2>
-        <span class="text-sm">{{ 'list.keep-working' | transloco }}</span>
-      </div>
-    </div>
+    <mtx-list-header
+      titleRef="list.jurisdiction-list"
+      [totalCountLastDays]="totalRequestCountLastDays()" />
 
     <div class="flex flex-col space-y-2">
       <mtx-jurisdiction-card
@@ -66,15 +43,15 @@ export class JurisdictionListComponent {
   );
   private readonly jurisdictionService = inject(JurisdictionService);
   private readonly appConfigurationService = inject(AppConfigurationService);
-  private readonly jurisdictionListService = inject(JurisdictionListService);
+  private readonly listService = inject(ListService);
 
   jurisdictions = this.jurisdictionService.jurisdictions;
   appConfigurationsByJurisdiction =
     this.appConfigurationService.appConfigurationsByJurisdiction;
-  requestCountsByJurisdiction = this.jurisdictionListService.requestCountsByJurisdiction;
+  requestCountsByJurisdiction = this.listService.requestCountsByJurisdiction;
   requestCountLastDaysByJurisdiction =
-    this.jurisdictionListService.requestCountLastDaysByJurisdiction;
-  totalRequestCountLastDays = this.jurisdictionListService.totalRequestCountLastDays;
+    this.listService.requestCountLastDaysByJurisdiction;
+  totalRequestCountLastDays = this.listService.totalRequestCountLastDays;
 
   selectJurisdiction(jurisdiction: Jurisdiction): void {
     this.jurisdictionService.updateJurisdiction(jurisdiction);

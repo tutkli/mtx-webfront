@@ -7,5 +7,6 @@ export interface StatusNode {
 
 export enum StatusNodeType {
   FinalOkNode = 'final_ok_node',
+  FinalNotOkNode = 'final_not_ok_node',
   MiddleNode = 'middle_node',
 }

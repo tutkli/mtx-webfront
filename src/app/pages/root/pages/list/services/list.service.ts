@@ -5,23 +5,42 @@ import { RequestApiService } from '@core/api/request/request-api.service';
 import { combineLatest } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class JurisdictionListService {
+export class ListService {
   private readonly jurisdictionService = inject(JurisdictionService);
   private readonly requestApiService = inject(RequestApiService);
   private readonly router = inject(Router);
 
   private _requestCountsByJurisdiction = signal<Map<string, number>>(new Map());
-  public requestCountsByJurisdiction = this._requestCountsByJurisdiction.asReadonly();
-
   private _requestCountLastDaysByJurisdiction = signal<Map<string, number>>(new Map());
+
+  public requestCountsByJurisdiction = this._requestCountsByJurisdiction.asReadonly();
   public requestCountLastDaysByJurisdiction =
     this._requestCountLastDaysByJurisdiction.asReadonly();
-
   public totalRequestCountLastDays = computed(() => {
     return Array.from(this.requestCountLastDaysByJurisdiction().values()).reduce(
       (a, b) => a + b,
       0
     );
+  });
+  public selectedJurisdictionCount = computed(() => {
+    const selectedJurisdiction = this.jurisdictionService.selectedJurisdiction();
+    if (selectedJurisdiction) {
+      return (
+        this._requestCountsByJurisdiction().get(selectedJurisdiction.jurisdiction_id) ?? 0
+      );
+    }
+    return 0;
+  });
+  public selectedJurisdictionLastDays = computed(() => {
+    const selectedJurisdiction = this.jurisdictionService.selectedJurisdiction();
+    if (selectedJurisdiction) {
+      return (
+        this._requestCountLastDaysByJurisdiction().get(
+          selectedJurisdiction.jurisdiction_id
+        ) ?? 0
+      );
+    }
+    return 0;
   });
 
   private redirectToRequestsList = effect(() => {

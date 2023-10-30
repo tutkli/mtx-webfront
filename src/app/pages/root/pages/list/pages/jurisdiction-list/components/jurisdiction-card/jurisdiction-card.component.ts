@@ -19,12 +19,12 @@ import { TranslocoPipe } from '@ngneat/transloco';
     ShortNumberPipe,
     TranslocoPipe,
   ],
-  template: ` <div
+  template: `<div
     mtxCard
     role="button"
     tabindex="0"
-    class="flex h-24 justify-between overflow-hidden transition-all hover:scale-105">
-    <div class=" flex items-center space-x-4 p-2">
+    class="flex items-stretch justify-between overflow-hidden transition-all sm:hover:scale-105">
+    <div class="flex h-full items-center space-x-4 p-2">
       <img
         [src]="appConfiguration?.app_icon_url"
         [alt]="jurisdiction.name + ' icon'"
@@ -42,7 +42,7 @@ import { TranslocoPipe } from '@ngneat/transloco';
       </div>
     </div>
     <div
-      class="flex h-full w-fit flex-col items-center justify-center self-end bg-muted p-2 text-sm text-muted-foreground">
+      class="flex w-fit flex-col items-center justify-center bg-muted p-2 text-sm text-muted-foreground">
       <span class="text-2xl font-medium">
         {{ requestCountLastDays | shortNumber }}
       </span>

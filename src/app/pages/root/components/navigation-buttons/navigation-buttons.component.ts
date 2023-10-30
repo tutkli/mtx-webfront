@@ -54,7 +54,7 @@ export class NavigationButtonsComponent {
 
   navigationItems: { link: string; icon: IconName }[] = [
     { link: '/list', icon: 'lucideList' },
-    { link: '/user', icon: 'lucideUser2' },
+    { link: '/testing', icon: 'lucideUser2' },
     { link: '/new', icon: 'lucideAlertCircle' },
     { link: '/settings', icon: 'lucideSettings' },
     { link: '/filter', icon: 'lucideFilter' },

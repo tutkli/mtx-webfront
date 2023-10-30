@@ -29,6 +29,7 @@
     "@ngneat/overview": "^5.1.0",
     "@ngneat/transloco": "^6.0.0",
     "cva": "^1.0.0-beta.1",
+    "ngx-breakpoint-observer": "^1.1.0",
     "ngxtension": "^0.12.0",
     "ol": "^8.1.0",
     "rxjs": "~7.8.0",
