@@ -9,7 +9,7 @@ export class RequestApiService {
   private readonly baseUrl = injectBaseUrl();
   private readonly http = inject(HttpClient);
 
-  getRequests(jurisdiction_ids: string[], limit = 1, page = 1): Observable<Request[]> {
+  getRequests(jurisdiction_ids: string[], limit = 30, page = 1): Observable<Request[]> {
     const endpoint = `${this.baseUrl}/requests`;
     const params = new HttpParams({
       fromObject: { jurisdiction_ids, limit, page },

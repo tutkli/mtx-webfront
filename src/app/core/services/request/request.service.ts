@@ -13,7 +13,7 @@ export interface RequestState {
 const DEFAULT_STATE: RequestState = {
   requests: [],
   page: 1,
-  limit: 30,
+  limit: 50,
   loading: false,
 };
 
