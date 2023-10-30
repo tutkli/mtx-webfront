@@ -14,8 +14,10 @@ export class JurisdictionService {
 
   public setJurisdictions = (jurisdictions: Jurisdiction[]) =>
     this._jurisdictions.set(jurisdictions);
-  public updateJurisdiction = (jurisdiction?: Jurisdiction) =>
-    this._selectedJurisdiction.set(jurisdiction);
+  public updateJurisdiction = (jurisdiction?: Jurisdiction) => {
+    if (this._selectedJurisdiction()?.id !== jurisdiction?.id)
+      this._selectedJurisdiction.set(jurisdiction);
+  };
 
   init(): void {
     this.jurisdictionApiService.getJurisdictions().subscribe(jurisdictions => {
