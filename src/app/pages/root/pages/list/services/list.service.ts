@@ -49,6 +49,12 @@ export class ListService {
     }
   });
 
+  private redirectToJurisdictionList = effect(() => {
+    if (!this.jurisdictionService.selectedJurisdiction()) {
+      this.router.navigate(['list', 'jurisdictions']).then();
+    }
+  });
+
   private loadRequestCounts = effect(() => {
     this.getRequestCountsByJurisdiction(
       this.jurisdictionService

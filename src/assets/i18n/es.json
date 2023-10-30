@@ -1,4 +1,8 @@
 {
+  "sidenav": {
+    "show-list": "Mostrar la lista",
+    "show-map": "Mostrar el mapa"
+  },
   "list": {
     "jurisdiction-list": "Listado de jurisdicciones",
     "request-list": "Listado de reportes",

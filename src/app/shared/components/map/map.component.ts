@@ -26,11 +26,12 @@ import { useGeographic } from 'ol/proj';
 import { isJurisdictionFeature } from '@utils/map/map-features.utils';
 import { MapZoomControlsComponent } from '@shared/components/map-zoom-controls/map-zoom-controls.component';
 import { NgIf } from '@angular/common';
+import { SidenavControlComponent } from '@shared/components/sidenav-control/sidenav-control.component';
 
 @Component({
   selector: 'mtx-map',
   standalone: true,
-  imports: [MapZoomControlsComponent, NgIf],
+  imports: [MapZoomControlsComponent, NgIf, SidenavControlComponent],
   template: `
     <mtx-map-zoom-controls *ngIf="showControls()" [map]="map" />
     <div id="ol-map" class="relative h-full w-full"></div>
@@ -105,7 +106,7 @@ export class MapComponent implements AfterViewInit {
   });
 
   private loadRequestMarkers = effect(() => {
-    if (this.requests.length) {
+    if (this.requests.length || !this.selectedJurisdiction()) {
       this.requestsLayer?.getSource()?.clear();
       return;
     }
