@@ -6,5 +6,11 @@
     "requests": "reportes",
     "keep-working": "Seguimos trabajando para mejorar",
     "requests-resolved": "SOLUCIONADOS*"
+  },
+  "error": {
+    "jurisdiction": {
+      "title": "Error al seleccionar la jurisdicción",
+      "description": "No hemos podido encontrar la configuración de esta jurisdicción"
+    }
   }
 }

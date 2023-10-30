@@ -17,7 +17,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHotToastConfig({
       position: 'bottom-right',
-      autoClose: false,
     }),
     provideTransloco({
       config: {

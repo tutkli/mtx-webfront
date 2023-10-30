@@ -54,6 +54,10 @@ export class JurisdictionListComponent {
   totalRequestCountLastDays = this.listService.totalRequestCountLastDays;
 
   selectJurisdiction(jurisdiction: Jurisdiction): void {
+    if (!this.appConfigurationsByJurisdiction().get(jurisdiction.jurisdiction_id)) {
+      this.jurisdictionService.showJurisdictionErrorToast();
+      return;
+    }
     this.jurisdictionService.updateJurisdiction(jurisdiction);
   }
 }
