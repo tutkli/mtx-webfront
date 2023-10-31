@@ -3,10 +3,12 @@ import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.se
 import { Router } from '@angular/router';
 import { RequestApiService } from '@core/api/request/request-api.service';
 import { combineLatest } from 'rxjs';
+import { RequestService } from '@core/services/request/request.service';
 
 @Injectable({ providedIn: 'root' })
 export class ListService {
   private readonly jurisdictionService = inject(JurisdictionService);
+  private readonly requestService = inject(RequestService);
   private readonly requestApiService = inject(RequestApiService);
   private readonly router = inject(Router);
 
@@ -52,6 +54,13 @@ export class ListService {
   private redirectToJurisdictionList = effect(() => {
     if (!this.jurisdictionService.selectedJurisdiction()) {
       this.router.navigate(['list', 'jurisdictions']).then();
+    }
+  });
+
+  private redirectToRequestDetail = effect(() => {
+    const selectedRequest = this.requestService.selectedRequest();
+    if (selectedRequest) {
+      this.router.navigate(['list', 'request', selectedRequest.token]).then();
     }
   });
 

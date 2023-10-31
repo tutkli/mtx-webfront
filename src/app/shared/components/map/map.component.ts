@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import TileLayer from 'ol/layer/Tile';
 import { OSM, XYZ } from 'ol/source';
-import { Feature, Map, View } from 'ol';
+import { Feature, Map, Overlay, View } from 'ol';
 import { RequestService } from '@core/services/request/request.service';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
@@ -23,18 +23,40 @@ import {
   requestMarkerStyle,
 } from '@utils/map/map-styles.utils';
 import { useGeographic } from 'ol/proj';
-import { isJurisdictionFeature } from '@utils/map/map-features.utils';
+import { isJurisdictionFeature, isRequestFeature } from '@utils/map/map-features.utils';
 import { MapZoomControlsComponent } from '@shared/components/map-zoom-controls/map-zoom-controls.component';
-import { NgIf } from '@angular/common';
+import { NgComponentOutlet, NgIf, NgTemplateOutlet } from '@angular/common';
 import { SidenavControlComponent } from '@shared/components/sidenav-control/sidenav-control.component';
+import { RequestCardComponent } from '@pages/root/pages/list/pages/requests-list/components/request-card/request-card.component';
+import { isExtentFinite } from '@utils/map/map-source.utils';
+import { Extent } from 'ol/extent';
 
 @Component({
   selector: 'mtx-map',
   standalone: true,
-  imports: [MapZoomControlsComponent, NgIf, SidenavControlComponent],
+  imports: [
+    MapZoomControlsComponent,
+    NgIf,
+    SidenavControlComponent,
+    NgComponentOutlet,
+    NgTemplateOutlet,
+  ],
   template: `
     <mtx-map-zoom-controls *ngIf="showControls()" [map]="map" />
     <div id="ol-map" class="relative h-full w-full"></div>
+    <div
+      #requestPopup
+      class="absolute min-w-[300px] shadow-sm"
+      (mouseenter)="overlayHovered.set(true)"
+      (mouseleave)="overlayHovered.set(false)">
+      <ng-container *ngIf="highlightedRequest()">
+        <ng-container
+          *ngComponentOutlet="
+            RequestCardComponent;
+            inputs: { request: highlightedRequest() }
+          " />
+      </ng-container>
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -42,22 +64,29 @@ export class MapComponent implements AfterViewInit {
   private readonly requestService = inject(RequestService);
   private readonly jurisdictionService = inject(JurisdictionService);
 
+  protected readonly RequestCardComponent = RequestCardComponent;
+
   private jurisdictions = this.jurisdictionService.jurisdictions;
   private selectedJurisdiction = this.jurisdictionService.selectedJurisdiction;
   private requests = this.requestService.requests;
+  protected highlightedRequest = this.requestService.highlightedRequest;
 
-  showControls = signal(false);
+  @ViewChild('requestPopup') requestPopupElement!: ElementRef<HTMLDivElement>;
 
-  @ViewChild('ol-map') mapElement!: ElementRef<HTMLDivElement>;
   map!: Map;
+  requestOverlay: Overlay | undefined;
   tileLayer: TileLayer<OSM> | undefined;
   jurisdictionLayer: VectorLayer<VectorSource> | undefined;
   requestsLayer: VectorLayer<VectorSource> | undefined;
+  showControls = signal(false);
+  overlayHovered = signal(false);
 
   ngAfterViewInit(): void {
     this.initMap();
     this.initLayers();
+    this.initRequestOverlay();
     this.addClickInteraction();
+    this.addHoverInteraction();
     this.showControls.set(true);
   }
 
@@ -83,10 +112,21 @@ export class MapComponent implements AfterViewInit {
   private fitToJurisdictions = effect(() => {
     if (this.jurisdictions().length && !this.selectedJurisdiction()) {
       const jurisdictionExtent = this.jurisdictionLayer?.getSource()?.getExtent();
-      if (jurisdictionExtent?.every(e => Number.isFinite(e))) {
-        this.map
-          .getView()
-          .fit(jurisdictionExtent, { duration: 500, padding: [100, 100, 100, 100] });
+      if (isExtentFinite(jurisdictionExtent)) {
+        this.fitMapToExtent(jurisdictionExtent);
+      }
+    }
+  });
+
+  private fitToSelectedRequest = effect(() => {
+    const selectedRequest = this.requestService.selectedRequest();
+    if (selectedRequest) {
+      const requestFeature = this.requestsLayer
+        ?.getSource()
+        ?.getFeatureById(selectedRequest.token);
+      const featureExtent = requestFeature?.getGeometry()?.getExtent();
+      if (isExtentFinite(featureExtent)) {
+        this.fitMapToExtent(featureExtent);
       }
     }
   });
@@ -106,7 +146,7 @@ export class MapComponent implements AfterViewInit {
   });
 
   private loadRequestMarkers = effect(() => {
-    if (this.requests.length || !this.selectedJurisdiction()) {
+    if (!this.requests().length || !this.selectedJurisdiction()) {
       this.requestsLayer?.getSource()?.clear();
       return;
     }
@@ -117,12 +157,23 @@ export class MapComponent implements AfterViewInit {
         request,
       });
 
+      marker.setId(request.token);
       marker.setStyle(requestMarkerStyle(request));
       return marker;
     });
 
     this.requestsLayer?.getSource()?.addFeatures(markers);
     this.fitToRequestMarkers();
+  });
+
+  private showRequestPopup = effect(() => {
+    const highlightedRequest = this.highlightedRequest();
+
+    if (highlightedRequest) {
+      this.requestOverlay?.setPosition([highlightedRequest.long, highlightedRequest.lat]);
+    } else {
+      this.requestOverlay?.setPosition(undefined);
+    }
   });
 
   private fitToRequestMarkers() {
@@ -141,6 +192,7 @@ export class MapComponent implements AfterViewInit {
       view: new View({
         center: [0, 0],
         zoom: 2,
+        maxZoom: 18,
       }),
       controls: [],
       layers: [],
@@ -171,18 +223,49 @@ export class MapComponent implements AfterViewInit {
     this.map.setLayers([this.tileLayer, this.jurisdictionLayer, this.requestsLayer]);
   }
 
+  private initRequestOverlay() {
+    this.requestOverlay = new Overlay({
+      element: this.requestPopupElement.nativeElement,
+      autoPan: {
+        animation: {
+          duration: 250,
+        },
+      },
+    });
+    this.map.addOverlay(this.requestOverlay);
+  }
+
+  private fitMapToExtent(extent: Extent | undefined) {
+    if (!extent) return;
+
+    this.map.getView().fit(extent, { duration: 500, padding: [50, 50, 50, 50] });
+  }
+
   private addClickInteraction() {
     this.map.on('click', event => {
-      const feature = this.map.forEachFeatureAtPixel(event.pixel, feature => {
-        return feature;
-      });
+      const feature = this.map.getFeaturesAtPixel(event.pixel)?.[0];
 
       if (!feature) {
         return;
-      }
-
-      if (isJurisdictionFeature(feature)) {
+      } else if (isJurisdictionFeature(feature)) {
         this.jurisdictionService.updateJurisdiction(feature.get('jurisdiction'));
+      } else if (isRequestFeature(feature)) {
+        this.requestService.selectRequest(feature.get('request'));
+      }
+    });
+  }
+
+  private addHoverInteraction() {
+    this.map.on('pointermove', e => {
+      const hoveredFeatures = this.map.getFeaturesAtPixel(e.pixel);
+      if (
+        hoveredFeatures.length &&
+        isRequestFeature(hoveredFeatures[0]) &&
+        !this.overlayHovered()
+      ) {
+        this.requestService.highlightRequest(hoveredFeatures[0].get('request'));
+      } else if (!this.overlayHovered()) {
+        this.requestService.highlightRequest();
       }
     });
   }

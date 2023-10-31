@@ -36,4 +36,9 @@ export const listRoutes: Routes = [
     loadComponent: () => import('./pages/requests-list/requests-list.component'),
     canActivate: [requestsListGuard],
   },
+  {
+    path: 'request/:request_token',
+    loadComponent: () => import('./pages/request-detail/request-detail.component'),
+    canActivate: [requestsListGuard],
+  },
 ];
