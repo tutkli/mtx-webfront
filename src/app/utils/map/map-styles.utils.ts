@@ -1,4 +1,6 @@
 import { Fill, Icon, Stroke, Style } from 'ol/style';
+import { Request } from '@core/models/request.model';
+import { statusNodeImage } from '@core/models/status-node.model';
 
 export const emptyStyle = () => new Style();
 
@@ -8,11 +10,21 @@ export const jurisdictionPerimeterStyle = () =>
     stroke: new Stroke({ color: '#171717', width: 1 }),
   });
 
-export const requestMarkerStyle = () => {
-  return new Style({
+export const requestMarkerStyle = (request: Request) => {
+  const statusNodeStyle = new Style({
+    zIndex: 1,
     image: new Icon({
-      src: 'assets/images/map-marker.png',
-      width: 30,
+      src: statusNodeImage[request.status_node_type],
+      width: 50,
     }),
   });
+  const requestImageStyle = new Style({
+    zIndex: 2,
+    image: new Icon({
+      src: request.service_icon ?? 'assets/images/placeholder_image.jpg',
+      width: 40,
+    }),
+  });
+
+  return [statusNodeStyle, requestImageStyle];
 };

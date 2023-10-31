@@ -117,7 +117,7 @@ export class MapComponent implements AfterViewInit {
         request,
       });
 
-      marker.setStyle(requestMarkerStyle());
+      marker.setStyle(requestMarkerStyle(request));
       return marker;
     });
 
