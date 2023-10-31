@@ -9,7 +9,8 @@
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
     "prepare": "git config core.hookspath .githooks",
-    "prettify": "prettier --write ."
+    "prettify": "prettier --write .",
+    "analyze-bundle": "ng build --stats-json && webpack-bundle-analyzer dist/mtx-webfront/stats.json"
   },
   "private": true,
   "dependencies": {
