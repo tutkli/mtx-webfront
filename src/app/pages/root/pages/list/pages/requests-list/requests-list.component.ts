@@ -22,7 +22,9 @@ import { ListSkeletonComponent } from '@pages/root/pages/list/components/list-sk
       titleRef="list.request-list"
       [totalCountLastDays]="selectedJurisdictionLastDays()" />
     <ng-container *ngIf="requests().length; else listSkeleton">
-      <mtx-request-card *ngFor="let request of requests()" [request]="request" />
+      <div class="flex flex-col space-y-2">
+        <mtx-request-card *ngFor="let request of requests()" [request]="request" />
+      </div>
     </ng-container>
 
     <ng-template #listSkeleton>
@@ -44,6 +46,5 @@ export default class RequestsListComponent {
   private readonly listService = inject(ListService);
 
   selectedJurisdictionLastDays = this.listService.selectedJurisdictionLastDays;
-
   requests = this.requestService.requests;
 }
