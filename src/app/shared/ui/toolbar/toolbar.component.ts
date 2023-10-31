@@ -31,12 +31,12 @@ export class ToolbarComponent implements OnChanges {
   @Input() color: ToolbarVariants['color'] = 'default';
   @Input() class = '';
 
-  hostClass = hostBinding(
+  _class = hostBinding(
     'attr.class',
     signal(toolbarVariants({ color: this.color, className: this.class }))
   );
 
   ngOnChanges() {
-    this.hostClass.set(toolbarVariants({ color: this.color, className: this.class }));
+    this._class.set(toolbarVariants({ color: this.color, className: this.class }));
   }
 }

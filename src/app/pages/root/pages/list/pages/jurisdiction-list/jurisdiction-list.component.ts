@@ -48,7 +48,7 @@ import { ListSkeletonComponent } from '@pages/root/pages/list/components/list-sk
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class JurisdictionListComponent {
-  private hostClass = hostBinding(
+  private _class = hostBinding(
     'attr.class',
     signal(
       'flex h-full w-full flex-col gap-4 p-4 max-h-[calc(100%-53px)] overflow-auto bg-background'

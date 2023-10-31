@@ -49,14 +49,14 @@ export class TabsContentDirective implements OnChanges {
 
   @Input() class = '';
 
-  hostClass = hostBinding(
+  _class = hostBinding(
     'attr.class',
     signal(tabsContentVariants({ className: this.class }))
   );
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('class')) {
-      this.hostClass.set(tabsContentVariants({ className: this.class }));
+      this._class.set(tabsContentVariants({ className: this.class }));
     }
   }
 

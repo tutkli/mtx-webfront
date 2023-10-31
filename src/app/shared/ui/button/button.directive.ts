@@ -39,7 +39,7 @@ export class ButtonDirective implements OnChanges {
   @Input() size: ButtonVariants['size'] = 'default';
   @Input() class = '';
 
-  private hostClass = hostBinding(
+  private _class = hostBinding(
     'attr.class',
     signal(
       buttonVariants({
@@ -51,7 +51,7 @@ export class ButtonDirective implements OnChanges {
   );
 
   ngOnChanges() {
-    this.hostClass.set(
+    this._class.set(
       buttonVariants({
         type: this.type,
         size: this.size,

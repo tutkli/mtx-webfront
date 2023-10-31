@@ -28,13 +28,13 @@ export class AlertDirective implements OnChanges {
   @Input() type: AlertVariants['type'] = 'default';
   @Input() class = '';
 
-  private hostClass = hostBinding(
+  private _class = hostBinding(
     'attr.class',
     signal(alertVariants({ type: this.type, className: this.class }))
   );
 
   ngOnChanges() {
-    this.hostClass.set(
+    this._class.set(
       alertVariants({
         type: this.type,
         className: this.class,

@@ -57,14 +57,14 @@ export class TabsTriggerDirective implements OnChanges {
 
   @Input() class = '';
 
-  hostClass = hostBinding(
+  _class = hostBinding(
     'attr.class',
     signal(tabsTriggerVariants({ className: this.class }))
   );
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('class')) {
-      this.hostClass.set(tabsTriggerVariants({ className: this.class }));
+      this._class.set(tabsTriggerVariants({ className: this.class }));
     }
   }
 

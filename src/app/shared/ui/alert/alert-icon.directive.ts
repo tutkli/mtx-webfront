@@ -15,7 +15,7 @@ export type AlertIconVariants = VariantProps<typeof alertIconVariants>;
 export class AlertIconDirective implements OnChanges {
   @Input() class = '';
 
-  private hostClass = hostBinding(
+  private _class = hostBinding(
     'attr.class',
     signal(
       alertIconVariants({
@@ -25,7 +25,7 @@ export class AlertIconDirective implements OnChanges {
   );
 
   ngOnChanges() {
-    this.hostClass.set(
+    this._class.set(
       alertIconVariants({
         className: this.class,
       })

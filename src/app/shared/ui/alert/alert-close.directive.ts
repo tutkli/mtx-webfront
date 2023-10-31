@@ -15,7 +15,7 @@ export type AlertCloseVariants = VariantProps<typeof alertCloseVariants>;
 export class AlertCloseDirective implements OnChanges {
   @Input() class = '';
 
-  private hostClass = hostBinding(
+  private _class = hostBinding(
     'attr.class',
     signal(
       alertCloseVariants({
@@ -25,7 +25,7 @@ export class AlertCloseDirective implements OnChanges {
   );
 
   ngOnChanges() {
-    this.hostClass.set(
+    this._class.set(
       alertCloseVariants({
         className: this.class,
       })

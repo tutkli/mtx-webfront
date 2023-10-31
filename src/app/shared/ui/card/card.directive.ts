@@ -15,12 +15,12 @@ export type CardVariants = VariantProps<typeof cardVariants>;
 export class CardDirective implements OnChanges {
   @Input() class = '';
 
-  private hostClass = hostBinding(
+  private _class = hostBinding(
     'attr.class',
     signal(cardVariants({ className: this.class }))
   );
 
   ngOnChanges() {
-    this.hostClass.set(cardVariants({ className: this.class }));
+    this._class.set(cardVariants({ className: this.class }));
   }
 }

@@ -15,7 +15,7 @@ export type AlertTitleVariants = VariantProps<typeof alertTitleVariants>;
 export class AlertTitleDirective implements OnChanges {
   @Input() class = '';
 
-  private hostClass = hostBinding(
+  private _class = hostBinding(
     'attr.class',
     signal(
       alertTitleVariants({
@@ -25,7 +25,7 @@ export class AlertTitleDirective implements OnChanges {
   );
 
   ngOnChanges() {
-    this.hostClass.set(
+    this._class.set(
       alertTitleVariants({
         className: this.class,
       })

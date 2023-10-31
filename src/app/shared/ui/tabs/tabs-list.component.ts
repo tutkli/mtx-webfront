@@ -65,7 +65,7 @@ export class TabsListComponent implements OnChanges, AfterContentInit {
 
   @Input() class = '';
 
-  hostClass = hostBinding(
+  _class = hostBinding(
     'attr.class',
     signal(
       tabsListVariants({
@@ -77,7 +77,7 @@ export class TabsListComponent implements OnChanges, AfterContentInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('class')) {
-      this.hostClass.set(
+      this._class.set(
         tabsListVariants({
           orientation: this._orientation(),
           className: this.class,
