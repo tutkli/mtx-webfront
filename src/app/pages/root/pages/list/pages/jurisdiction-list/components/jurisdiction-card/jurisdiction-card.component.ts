@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NgForOf } from '@angular/common';
+import { LowerCasePipe, NgForOf } from '@angular/common';
 import { CardDescriptionDirective } from '@shared/ui/card/card-description.directive';
 import { CardDirective } from '@shared/ui/card/card.directive';
 import { CardTitleDirective } from '@shared/ui/card/card-title.directive';
@@ -18,6 +18,7 @@ import { TranslocoPipe } from '@ngneat/transloco';
     NgForOf,
     ShortNumberPipe,
     TranslocoPipe,
+    LowerCasePipe,
   ],
   template: `<div
     mtxCard
@@ -37,7 +38,7 @@ import { TranslocoPipe } from '@ngneat/transloco';
           <span class="font-semibold">
             {{ requestCount | shortNumber }}
           </span>
-          {{ 'list.requests' | transloco }}
+          {{ 'label.requests' | transloco | lowercase }}
         </p>
       </div>
     </div>
@@ -46,7 +47,7 @@ import { TranslocoPipe } from '@ngneat/transloco';
       <span class="text-2xl font-medium">
         {{ requestCountLastDays | shortNumber }}
       </span>
-      <span>{{ 'list.requests' | transloco }}</span>
+      <span>{{ 'label.requests' | transloco | lowercase }}</span>
       <span class="text-primary">{{ 'list.requests-resolved' | transloco }}</span>
     </div>
   </div>`,

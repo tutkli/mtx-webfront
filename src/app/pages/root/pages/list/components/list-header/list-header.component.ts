@@ -23,7 +23,7 @@ import { TranslocoPipe } from '@ngneat/transloco';
       <div>
         <h2 class="text-lg">
           <span class="text-2xl font-medium">{{ totalCountLastDays | shortNumber }}</span>
-          {{ 'list.requests' | transloco }}
+          {{ 'label.requests' | transloco | lowercase }}
           <span class="font-medium text-primary">{{
             'list.requests-resolved' | transloco
           }}</span>

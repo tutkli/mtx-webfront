@@ -1,4 +1,8 @@
 {
+  "label": {
+    "request": "Reporte",
+    "requests": "Reportes"
+  },
   "sidenav": {
     "show-list": "Mostrar la lista",
     "show-map": "Mostrar el mapa"
@@ -7,7 +11,6 @@
     "jurisdiction-list": "Listado de jurisdicciones",
     "request-list": "Listado de reportes",
     "last-days": "*Últimos 30 días",
-    "requests": "reportes",
     "keep-working": "Seguimos trabajando para mejorar",
     "requests-resolved": "SOLUCIONADOS*"
   },
@@ -16,5 +19,8 @@
       "title": "Error al seleccionar la jurisdicción",
       "description": "No hemos podido encontrar la configuración de esta jurisdicción"
     }
+  },
+  "request-detail": {
+    "description": "Descripción"
   }
 }
