@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
 import { Jurisdiction } from '@core/models/jurisdiction.model';
 import { hostBinding } from 'ngxtension/host-binding';
@@ -7,30 +7,43 @@ import { AppConfigurationService } from '@core/services/app-configuration/app-co
 import { JurisdictionCardComponent } from '@pages/root/pages/list/pages/jurisdiction-list/components/jurisdiction-card/jurisdiction-card.component';
 import { ListService } from '@pages/root/pages/list/services/list.service';
 import { ListHeaderComponent } from '@pages/root/pages/list/components/list-header/list-header.component';
+import { ListSkeletonComponent } from '@pages/root/pages/list/components/list-skeleton/list-skeleton.component';
 
 @Component({
   selector: 'mtx-jurisdiction-list',
   standalone: true,
-  imports: [NgForOf, JurisdictionCardComponent, ListHeaderComponent],
+  imports: [
+    NgForOf,
+    JurisdictionCardComponent,
+    ListHeaderComponent,
+    ListSkeletonComponent,
+    NgIf,
+  ],
   template: `
     <mtx-list-header
       titleRef="list.jurisdiction-list"
       [totalCountLastDays]="totalRequestCountLastDays()" />
 
-    <div class="flex flex-col space-y-2">
-      <mtx-jurisdiction-card
-        *ngFor="let jurisdiction of jurisdictions()"
-        (click)="selectJurisdiction(jurisdiction)"
-        (keyup.enter)="$event.preventDefault(); selectJurisdiction(jurisdiction)"
-        [jurisdiction]="jurisdiction"
-        [requestCount]="requestCountsByJurisdiction().get(jurisdiction.jurisdiction_id)"
-        [requestCountLastDays]="
-          requestCountLastDaysByJurisdiction().get(jurisdiction.jurisdiction_id)
-        "
-        [appConfiguration]="
-          appConfigurationsByJurisdiction().get(jurisdiction.jurisdiction_id)
-        " />
-    </div>
+    <ng-container *ngIf="jurisdictions().length; else listSkeleton">
+      <div class="flex flex-col space-y-2">
+        <mtx-jurisdiction-card
+          *ngFor="let jurisdiction of jurisdictions()"
+          (click)="selectJurisdiction(jurisdiction)"
+          (keyup.enter)="$event.preventDefault(); selectJurisdiction(jurisdiction)"
+          [jurisdiction]="jurisdiction"
+          [requestCount]="requestCountsByJurisdiction().get(jurisdiction.jurisdiction_id)"
+          [requestCountLastDays]="
+            requestCountLastDaysByJurisdiction().get(jurisdiction.jurisdiction_id)
+          "
+          [appConfiguration]="
+            appConfigurationsByJurisdiction().get(jurisdiction.jurisdiction_id)
+          " />
+      </div>
+    </ng-container>
+
+    <ng-template #listSkeleton>
+      <mtx-list-skeleton />
+    </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
