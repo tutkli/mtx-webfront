@@ -1,6 +1,4 @@
 import { Router, Routes } from '@angular/router';
-import { JurisdictionListComponent } from '@pages/root/pages/list/pages/jurisdiction-list/jurisdiction-list.component';
-import { RequestsListComponent } from '@pages/root/pages/list/pages/requests-list/requests-list.component';
 import { inject } from '@angular/core';
 import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -31,11 +29,11 @@ export const listRoutes: Routes = [
   },
   {
     path: 'jurisdictions',
-    component: JurisdictionListComponent,
+    loadComponent: () => import('./pages/jurisdiction-list/jurisdiction-list.component'),
   },
   {
     path: 'requests',
-    component: RequestsListComponent,
+    loadComponent: () => import('./pages/requests-list/requests-list.component'),
     canActivate: [requestsListGuard],
   },
 ];

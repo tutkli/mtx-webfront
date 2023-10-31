@@ -19,7 +19,7 @@ import { RequestCardComponent } from '@pages/root/pages/list/pages/requests-list
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RequestsListComponent {
+export default class RequestsListComponent {
   private _class = hostBinding(
     'attr.class',
     signal(

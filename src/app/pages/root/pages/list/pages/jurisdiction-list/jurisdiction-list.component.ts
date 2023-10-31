@@ -34,7 +34,7 @@ import { ListHeaderComponent } from '@pages/root/pages/list/components/list-head
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JurisdictionListComponent {
+export default class JurisdictionListComponent {
   private hostClass = hostBinding(
     'attr.class',
     signal(

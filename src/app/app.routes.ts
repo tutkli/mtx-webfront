@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
+import { rootRoutes } from '@pages/root/root.routes';
 
 export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('@pages/root/root-layout.component'),
-    loadChildren: () => import('@pages/root/root.routes').then(m => m.rootRoutes),
+    children: rootRoutes,
   },
 ];

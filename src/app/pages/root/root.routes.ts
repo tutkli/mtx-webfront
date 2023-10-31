@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
 import { TestingComponent } from '@pages/root/pages/testing/testing.component';
+import { listRoutes } from '@pages/root/pages/list/list.routes';
 
 export const rootRoutes: Routes = [
   {
     path: 'list',
-    loadChildren: () => import('./pages/list/list.routes').then(m => m.listRoutes),
+    children: listRoutes,
   },
   {
     path: 'testing',
