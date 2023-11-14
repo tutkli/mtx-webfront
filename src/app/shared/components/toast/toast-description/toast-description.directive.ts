@@ -1,6 +1,6 @@
 import { Directive, Input, OnChanges, signal } from '@angular/core';
-import { cva } from '../../../../../../../../CAELUM/caelum/src/app/shared/utils/cva';
 import { VariantProps } from 'cva';
+import { cva } from '@utils/cva';
 
 const toastDescriptionVariants = cva({
   base: 'text-sm leading-relaxed',
