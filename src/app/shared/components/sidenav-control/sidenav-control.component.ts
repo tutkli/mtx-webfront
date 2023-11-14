@@ -54,7 +54,7 @@ export class SidenavControlComponent {
   sidenavOpen = this.sidenavService.sidenavOpen;
   klass = computed(
     () =>
-      `absolute top-[4.5rem] z-10 flex overflow-hidden border-2 border-border shadow-sm transition-left duration-250 h-11 ${
+      `absolute top-[4.5rem] z-10 flex overflow-hidden shadow-md transition-left duration-250 h-11 ${
         this.sidenavOpen() ? 'left-[475px]' : 'left-5'
       }`
   );

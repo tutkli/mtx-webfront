@@ -32,7 +32,7 @@ export class MapZoomControlsComponent {
   protected _class = hostBinding(
     'attr.class',
     signal(
-      'absolute top-5 right-5 flex flex-col bg-background rounded-lg z-10 overflow-hidden divide-border divide-y-2 border-2 border-border shadow-sm'
+      'absolute top-5 right-5 flex flex-col bg-background rounded-lg z-10 overflow-hidden divide-border divide-y shadow-md'
     )
   );
 

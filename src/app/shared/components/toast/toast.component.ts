@@ -25,7 +25,7 @@ import { toastAnimation } from '@styles/animations/toast.animation';
 import { TranslocoPipe } from '@ngneat/transloco';
 
 const toastVariants = cva({
-  base: 'relative rounded-lg p-4 flex my-2 max-w-sm bg-background shadow-sm transition-all border border-border',
+  base: 'relative rounded-lg p-4 flex my-2 max-w-sm bg-background shadow-md transition-all',
   variants: {
     type: {
       success: 'text-green-500',
