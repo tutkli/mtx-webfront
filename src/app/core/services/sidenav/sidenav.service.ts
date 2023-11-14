@@ -1,11 +1,13 @@
-import { computed, effect, Injectable, signal, untracked } from '@angular/core';
-import { breakpointObserver } from '@utils/breakpoint-observer';
+import { computed, effect, inject, Injectable, signal, untracked } from '@angular/core';
 import { MatDrawerMode } from '@angular/material/sidenav';
+import { BreakpointService } from '@core/services/breakpoint/breakpoint.service';
 
 @Injectable({ providedIn: 'root' })
 export class SidenavService {
+  private readonly breakpointService = inject(BreakpointService);
+
   private _sidenavOpen = signal(true);
-  private _xsBreakpoint = breakpointObserver.smallerOrEqual('sm');
+  private _xsBreakpoint = this.breakpointService.xs;
 
   public sidenavOpen = this._sidenavOpen.asReadonly();
   public sidenavMode = computed<MatDrawerMode>(() =>

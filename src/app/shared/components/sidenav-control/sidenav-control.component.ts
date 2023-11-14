@@ -9,8 +9,8 @@ import {
 import { ButtonDirective } from '@shared/ui/button/button.directive';
 import { SidenavService } from '@core/services/sidenav/sidenav.service';
 import { NgClass, NgIf } from '@angular/common';
-import { breakpointObserver } from '@utils/breakpoint-observer';
 import { TranslocoPipe } from '@ngneat/transloco';
+import { BreakpointService } from '@core/services/breakpoint/breakpoint.service';
 
 @Component({
   selector: 'mtx-sidenav-control',
@@ -46,9 +46,11 @@ import { TranslocoPipe } from '@ngneat/transloco';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavControlComponent {
+  private readonly breakpointService = inject(BreakpointService);
+
   private readonly sidenavService = inject(SidenavService);
 
-  xsBreakpoint = breakpointObserver.smallerOrEqual('sm');
+  xsBreakpoint = this.breakpointService.xs;
   sidenavOpen = this.sidenavService.sidenavOpen;
   klass = computed(
     () =>
