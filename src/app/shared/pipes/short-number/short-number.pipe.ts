@@ -20,12 +20,12 @@ export class ShortNumberPipe implements PipeTransform {
       { key: 'K', value: 1000 },
     ];
 
-    for (let i = 0; i < powers.length; i++) {
-      let reduced = abs / powers[i].value;
+    for (const element of powers) {
+      let reduced = abs / element.value;
       reduced = Math.round(reduced * rounder) / rounder;
       if (reduced >= 1) {
         abs = reduced;
-        key = powers[i].key;
+        key = element.key;
         break;
       }
     }
