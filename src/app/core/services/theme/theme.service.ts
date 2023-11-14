@@ -12,12 +12,10 @@ export class ThemeService {
 
   appConfiguration = this.appConfigurationService.selectedAppConfiguration;
 
-  constructor() {
-    effect(() => {
-      this.document.documentElement.style.setProperty(
-        '--primary',
-        this.appConfiguration()?.main_color ?? this.defaultColor
-      );
-    });
-  }
+  private updatePrimaryColor = effect(() => {
+    this.document.documentElement.style.setProperty(
+      '--primary',
+      this.appConfiguration()?.main_color ?? this.defaultColor
+    );
+  });
 }

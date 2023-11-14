@@ -1,48 +1,43 @@
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { AppConfigurationApiService } from '@core/api/app-configuration/app-configuration-api.service';
 import { AppConfiguration } from '@core/models/app-configuration.model';
-import { catchError, combineLatest, of } from 'rxjs';
+import { catchError, combineLatest, map, of, switchMap } from 'rxjs';
 import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 @Injectable({ providedIn: 'root' })
 export class AppConfigurationService {
   private readonly appConfigurationApiService = inject(AppConfigurationApiService);
   private readonly jurisdictionService = inject(JurisdictionService);
 
-  private _appConfigurationsByJurisdiction = signal<Map<string, AppConfiguration>>(
-    new Map<string, AppConfiguration>()
-  );
-  public appConfigurationsByJurisdiction =
-    this._appConfigurationsByJurisdiction.asReadonly();
+  private appConfigsByJurisdiction$ = toObservable(
+    this.jurisdictionService.jurisdictions
+  ).pipe(
+    switchMap(jurisdictions => {
+      const observables = jurisdictions.map(jurisdiction =>
+        this.appConfigurationApiService
+          .getAppConfiguration(jurisdiction.jurisdiction_id)
+          .pipe(catchError(() => of(undefined)))
+      );
 
+      return combineLatest(observables);
+    }),
+    map(result => {
+      const appConfigMap: { [key in string]: AppConfiguration } = {};
+      for (const appConfig of result) {
+        if (appConfig) appConfigMap[appConfig.jurisdiction_id] = appConfig;
+      }
+      return appConfigMap;
+    })
+  );
+
+  public appConfigsByJurisdiction = toSignal(this.appConfigsByJurisdiction$, {
+    initialValue: {} as { [key in string]: AppConfiguration },
+  });
   public selectedAppConfiguration = computed(() => {
     const selectedJurisdiction = this.jurisdictionService.selectedJurisdiction();
     return selectedJurisdiction
-      ? this._appConfigurationsByJurisdiction().get(selectedJurisdiction.jurisdiction_id)
+      ? this.appConfigsByJurisdiction()[selectedJurisdiction.jurisdiction_id]
       : undefined;
   });
-
-  private loadAppConfigurations = effect(() => {
-    this.getAppConfigurations(
-      this.jurisdictionService
-        .jurisdictions()
-        .map(jurisdiction => jurisdiction.jurisdiction_id)
-    );
-  });
-
-  private getAppConfigurations(jurisdictionIds: string[]): void {
-    combineLatest(
-      jurisdictionIds.map(jurisdictionId =>
-        this.appConfigurationApiService
-          .getAppConfiguration(jurisdictionId)
-          .pipe(catchError(() => of(undefined)))
-      )
-    ).subscribe(result => {
-      const appConfigMap = new Map<string, AppConfiguration>();
-      for (const appConfig of result) {
-        if (appConfig) appConfigMap.set(appConfig.jurisdiction_id, appConfig);
-      }
-      this._appConfigurationsByJurisdiction.set(appConfigMap);
-    });
-  }
 }

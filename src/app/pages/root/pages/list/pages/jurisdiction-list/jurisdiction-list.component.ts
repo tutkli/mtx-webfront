@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
 import { Jurisdiction } from '@core/models/jurisdiction.model';
-import { hostBinding } from 'ngxtension/host-binding';
 import { AppConfigurationService } from '@core/services/app-configuration/app-configuration.service';
 import { JurisdictionCardComponent } from '@pages/root/pages/list/pages/jurisdiction-list/components/jurisdiction-card/jurisdiction-card.component';
 import { ListService } from '@pages/root/pages/list/services/list.service';
@@ -12,6 +11,10 @@ import { ListSkeletonComponent } from '@pages/root/pages/list/components/list-sk
   selector: 'mtx-jurisdiction-list',
   standalone: true,
   imports: [JurisdictionCardComponent, ListHeaderComponent, ListSkeletonComponent],
+  host: {
+    class:
+      'flex h-full w-full flex-col gap-4 p-4 max-h-[calc(100%-53px)] overflow-auto bg-background',
+  },
   template: `
     <mtx-list-header
       titleRef="list.jurisdiction-list"
@@ -31,7 +34,7 @@ import { ListSkeletonComponent } from '@pages/root/pages/list/components/list-sk
               requestCountLastDaysByJurisdiction().get(jurisdiction.jurisdiction_id)
             "
             [appConfiguration]="
-              appConfigurationsByJurisdiction().get(jurisdiction.jurisdiction_id)
+              appConfigsByJurisdiction()[jurisdiction.jurisdiction_id]
             " />
         }
       </div>
@@ -42,26 +45,19 @@ import { ListSkeletonComponent } from '@pages/root/pages/list/components/list-sk
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class JurisdictionListComponent {
-  private _class = hostBinding(
-    'attr.class',
-    signal(
-      'flex h-full w-full flex-col gap-4 p-4 max-h-[calc(100%-53px)] overflow-auto bg-background'
-    )
-  );
   private readonly jurisdictionService = inject(JurisdictionService);
   private readonly appConfigurationService = inject(AppConfigurationService);
   private readonly listService = inject(ListService);
 
   jurisdictions = this.jurisdictionService.jurisdictions;
-  appConfigurationsByJurisdiction =
-    this.appConfigurationService.appConfigurationsByJurisdiction;
+  appConfigsByJurisdiction = this.appConfigurationService.appConfigsByJurisdiction;
   requestCountsByJurisdiction = this.listService.requestCountsByJurisdiction;
   requestCountLastDaysByJurisdiction =
     this.listService.requestCountLastDaysByJurisdiction;
   totalRequestCountLastDays = this.listService.totalRequestCountLastDays;
 
   selectJurisdiction(jurisdiction: Jurisdiction): void {
-    if (!this.appConfigurationsByJurisdiction().get(jurisdiction.jurisdiction_id)) {
+    if (!this.appConfigsByJurisdiction()[jurisdiction.jurisdiction_id]) {
       this.jurisdictionService.showJurisdictionErrorToast();
       return;
     }
