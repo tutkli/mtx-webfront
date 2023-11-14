@@ -1,13 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { JurisdictionApiService } from '@core/api/jurisdiction/jurisdiction-api.service';
 import { Jurisdiction } from '@core/models/jurisdiction.model';
-import { HotToastService } from '@ngneat/hot-toast';
-import { ToastComponent, ToastData } from '@shared/components/toast/toast.component';
+import { ToastService } from '@core/services/toast/toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class JurisdictionService {
   private readonly jurisdictionApiService = inject(JurisdictionApiService);
-  private readonly hotToastService = inject(HotToastService);
+  private readonly toastService = inject(ToastService);
 
   private _jurisdictions = signal<Jurisdiction[]>([]);
   private _selectedJurisdiction = signal<Jurisdiction | undefined>(undefined);
@@ -30,13 +29,10 @@ export class JurisdictionService {
   }
 
   showJurisdictionErrorToast(): void {
-    this.hotToastService.show<ToastData>(ToastComponent, {
-      data: {
-        titleRef: 'error.jurisdiction.title',
-        descriptionRef: 'error.jurisdiction.description',
-        type: 'warn',
-        dismissible: true,
-      },
+    this.toastService.show({
+      titleRef: 'error.jurisdiction.title',
+      descriptionRef: 'error.jurisdiction.description',
+      type: 'danger',
     });
   }
 }
