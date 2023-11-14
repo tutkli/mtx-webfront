@@ -51,30 +51,30 @@ import { RequestService } from '@core/services/request/request.service';
         <h3 mtxCardTitle class="line-clamp-2">{{ request.description }}</h3>
         <p mtxCardDescription class="line-clamp-1">{{ request.address }}</p>
         <div mtxCardDescription class="flex items-center justify-between">
-          <div>
+          <div class="flex items-center space-x-1">
             <img
               [src]="request.service_icon"
               width="20"
               height="20"
               class="inline-flex rounded-full"
               alt="Request service icon" />
-            #{{ request.service_request_id }}
+            <span>#{{ request.service_request_id }}</span>
           </div>
 
           <div class="flex space-x-2">
-            <span class="align-middle">
+            <span class="flex items-center space-x-1">
               <ng-icon name="lucideThumbsUp" />
-              {{ request.reiterations_count }}
+              <span>{{ request.reiterations_count }}</span>
             </span>
 
-            <span class="align-middle">
+            <span class="flex items-center space-x-1">
               <ng-icon name="lucideThumbsDown" />
-              {{ request.complaints_count }}
+              <span>{{ request.complaints_count }}</span>
             </span>
 
-            <span class="align-middle">
+            <span class="flex items-center space-x-1">
               <ng-icon name="lucideMessageCircle" />
-              {{ request.comments_count }}
+              <span>{{ request.comments_count }}</span>
             </span>
           </div>
         </div>
