@@ -1,6 +1,5 @@
 import { Directive, Input, OnChanges, signal } from '@angular/core';
 import { VariantProps } from 'cva';
-import { hostBinding } from 'ngxtension/host-binding';
 import { cva } from '@utils/cva';
 
 const buttonVariants = cva({
@@ -28,26 +27,26 @@ const buttonVariants = cva({
     size: 'default',
   },
 });
-type ButtonVariants = VariantProps<typeof buttonVariants>;
+export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 @Directive({
   selector: '[mtxButton]',
   standalone: true,
+  host: {
+    '[attr.class]': '_class()',
+  },
 })
 export class ButtonDirective implements OnChanges {
   @Input() type: ButtonVariants['type'] = 'default';
   @Input() size: ButtonVariants['size'] = 'default';
   @Input() class = '';
 
-  private _class = hostBinding(
-    'attr.class',
-    signal(
-      buttonVariants({
-        type: this.type,
-        size: this.size,
-        className: this.class,
-      })
-    )
+  protected _class = signal(
+    buttonVariants({
+      type: this.type,
+      size: this.size,
+      className: this.class,
+    })
   );
 
   ngOnChanges() {

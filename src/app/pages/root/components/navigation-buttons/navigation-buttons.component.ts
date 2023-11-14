@@ -45,7 +45,7 @@ import { NgForOf } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationButtonsComponent {
-  _class = hostBinding(
+  protected _class = hostBinding(
     'attr.class',
     signal(
       'w-full border-b border-border shadow-sm inline-flex items-center justify-center bg-muted p-2 text-muted-foreground'

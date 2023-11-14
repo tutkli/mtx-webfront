@@ -5,7 +5,6 @@ import {
   signal,
   ViewEncapsulation,
 } from '@angular/core';
-import { hostBinding } from 'ngxtension/host-binding';
 import { TabsTriggerDirective } from '@shared/ui/tabs/tabs-trigger.component';
 import { TabsContentDirective } from '@shared/ui/tabs/tabs-content.directive';
 
@@ -16,22 +15,23 @@ export type TabsActivationMode = 'automatic' | 'manual';
 @Component({
   selector: 'mtx-tabs',
   standalone: true,
+  host: {
+    '[attr.data-orientation]': '_orientation()',
+    '[attr.dir]': '_direction()',
+  },
   template: ` <ng-content />`,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
 export class TabsComponent {
-  protected readonly _orientation = hostBinding(
-    'attr.data-orientation',
-    signal<TabsOrientation>('horizontal')
-  );
+  protected readonly _orientation = signal<TabsOrientation>('horizontal');
   @Input()
   set orientation(value: TabsOrientation) {
     this._orientation.set(value);
   }
   $orientation = this._orientation.asReadonly();
 
-  protected readonly _direction = hostBinding('attr.dir', signal<TabsDirection>('ltr'));
+  protected readonly _direction = signal<TabsDirection>('ltr');
   @Input()
   set direction(value: TabsDirection) {
     this._direction.set(value);

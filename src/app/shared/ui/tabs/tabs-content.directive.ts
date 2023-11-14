@@ -11,7 +11,6 @@ import {
 import { TabsComponent } from '@shared/ui/tabs/tabs.component';
 import { cva } from '@utils/cva';
 import { VariantProps } from 'cva';
-import { hostBinding } from 'ngxtension/host-binding';
 
 const tabsContentVariants = cva({
   base: 'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
@@ -28,6 +27,7 @@ export type TabsContentVariants = VariantProps<typeof tabsContentVariants>;
     '[id]': 'contentId',
     '[attr.aria-labelledby]': 'labelId',
     '[hidden]': '_isSelected() === false',
+    '[attr.class]': '_class()',
   },
 })
 export class TabsContentDirective implements OnChanges {
@@ -49,10 +49,7 @@ export class TabsContentDirective implements OnChanges {
 
   @Input() class = '';
 
-  _class = hostBinding(
-    'attr.class',
-    signal(tabsContentVariants({ className: this.class }))
-  );
+  protected _class = signal(tabsContentVariants({ className: this.class }));
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('class')) {

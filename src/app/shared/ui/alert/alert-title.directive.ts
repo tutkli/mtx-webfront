@@ -1,5 +1,4 @@
 import { Directive, Input, OnChanges, signal } from '@angular/core';
-import { hostBinding } from 'ngxtension/host-binding';
 import { cva } from '@utils/cva';
 import { VariantProps } from 'cva';
 
@@ -11,17 +10,17 @@ export type AlertTitleVariants = VariantProps<typeof alertTitleVariants>;
 @Directive({
   selector: '[mtxAlertTitle]',
   standalone: true,
+  host: {
+    '[attr.class]': '_class()',
+  },
 })
 export class AlertTitleDirective implements OnChanges {
   @Input() class = '';
 
-  private _class = hostBinding(
-    'attr.class',
-    signal(
-      alertTitleVariants({
-        className: this.class,
-      })
-    )
+  protected _class = signal(
+    alertTitleVariants({
+      className: this.class,
+    })
   );
 
   ngOnChanges() {

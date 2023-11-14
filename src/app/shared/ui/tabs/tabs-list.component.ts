@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
-  HostBinding,
   inject,
   Input,
   OnChanges,
@@ -19,7 +18,6 @@ import { TabsTriggerDirective } from '@shared/ui/tabs/tabs-trigger.component';
 import { rxHostListener } from '@utils/rx-host-integration';
 import { cva } from '@utils/cva';
 import { VariantProps } from 'cva';
-import { hostBinding } from 'ngxtension/host-binding';
 
 const tabsListVariants = cva({
   base: 'inline-flex items-center justify-center rounded-md bg-muted p-2 text-muted-foreground',
@@ -34,7 +32,7 @@ const tabsListVariants = cva({
   },
 });
 
-type TabsListVariants = VariantProps<typeof tabsListVariants>;
+export type TabsListVariants = VariantProps<typeof tabsListVariants>;
 
 @Component({
   selector: 'mtx-tabs-list',
@@ -44,6 +42,8 @@ type TabsListVariants = VariantProps<typeof tabsListVariants>;
     role: 'tablist',
     '[attr.aria-orientation]': '_orientation()',
     '[attr.data-orientation]': '_orientation()',
+    '[attr.aria-label]': '_ariaLabel()',
+    '[attr.class]': '_class()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -59,21 +59,23 @@ export class TabsListComponent implements OnChanges, AfterContentInit {
 
   private _keyManager?: FocusKeyManager<TabsTriggerDirective>;
 
-  @HostBinding('attr.aria-label')
+  protected _ariaLabel = signal<string | undefined>(undefined);
   @Input('aria-label')
-  ariaLabel: string | undefined;
+  set ariaLabel(value: string | undefined) {
+    this._ariaLabel.set(value);
+  }
 
   @Input() class = '';
 
-  _class = hostBinding(
-    'attr.class',
-    signal(
-      tabsListVariants({
-        orientation: this._orientation(),
-        className: this.class,
-      })
-    )
+  protected _class = signal(
+    tabsListVariants({
+      orientation: this._orientation(),
+      className: this.class,
+    })
   );
+
+  @ContentChildren(TabsTriggerDirective, { descendants: true })
+  public triggers?: QueryList<TabsTriggerDirective>;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('class')) {
@@ -86,10 +88,7 @@ export class TabsListComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  @ContentChildren(TabsTriggerDirective, { descendants: true })
-  public triggers?: QueryList<TabsTriggerDirective>;
-
-  public ngAfterContentInit() {
+  ngAfterContentInit() {
     if (!this.triggers) {
       return;
     }
@@ -99,7 +98,6 @@ export class TabsListComponent implements OnChanges, AfterContentInit {
       .withPageUpDown()
       .withWrap();
 
-    // needed because by default the index is set to -1, which means first interaction is skipped
     this._keyDownListener.pipe(take(1)).subscribe(() => {
       const currentKey = this._value();
       let activeIndex = 0;

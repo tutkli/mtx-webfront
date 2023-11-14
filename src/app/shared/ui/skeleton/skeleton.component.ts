@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { cva } from '@utils/cva';
 import { VariantProps } from 'cva';
-import { hostBinding } from 'ngxtension/host-binding';
 
 const skeletonVariants = cva({
   base: 'block animate-pulse bg-muted',
@@ -21,11 +20,14 @@ const skeletonVariants = cva({
     type: 'line',
   },
 });
-type SkeletonVariants = VariantProps<typeof skeletonVariants>;
+export type SkeletonVariants = VariantProps<typeof skeletonVariants>;
 
 @Component({
   selector: 'mtx-skeleton',
   standalone: true,
+  host: {
+    '[attr.class]': '_class()',
+  },
   template: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -33,10 +35,7 @@ export class SkeletonComponent implements OnChanges {
   @Input() class = '';
   @Input() type: SkeletonVariants['type'] = 'line';
 
-  private _class = hostBinding(
-    'attr.class',
-    signal(skeletonVariants({ type: this.type, className: this.class }))
-  );
+  protected _class = signal(skeletonVariants({ type: this.type, className: this.class }));
 
   ngOnChanges() {
     this._class.set(skeletonVariants({ type: this.type, className: this.class }));

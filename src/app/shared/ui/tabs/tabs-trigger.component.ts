@@ -11,7 +11,6 @@ import {
 import { TabsComponent } from '@shared/ui/tabs/tabs.component';
 import { cva } from '@utils/cva';
 import { VariantProps } from 'cva';
-import { hostBinding } from 'ngxtension/host-binding';
 
 const tabsTriggerVariants = cva({
   base: 'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-sm',
@@ -23,6 +22,7 @@ export type TabsTriggerVariants = VariantProps<typeof tabsTriggerVariants>;
   selector: 'button[mtxTabsTrigger]',
   standalone: true,
   host: {
+    '[attr.class]': '_class()',
     '[id]': 'labelId',
     type: 'button',
     role: 'tab',
@@ -57,10 +57,7 @@ export class TabsTriggerDirective implements OnChanges {
 
   @Input() class = '';
 
-  _class = hostBinding(
-    'attr.class',
-    signal(tabsTriggerVariants({ className: this.class }))
-  );
+  protected _class = signal(tabsTriggerVariants({ className: this.class }));
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('class')) {
