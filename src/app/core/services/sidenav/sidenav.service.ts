@@ -7,17 +7,17 @@ export class SidenavService {
   private readonly breakpointService = inject(BreakpointService);
 
   private _sidenavOpen = signal(true);
-  private _xsBreakpoint = this.breakpointService.xs;
+  private _smBreakpoint = this.breakpointService.sm;
 
   public sidenavOpen = this._sidenavOpen.asReadonly();
   public sidenavMode = computed<MatDrawerMode>(() =>
-    this._xsBreakpoint() ? 'over' : 'side'
+    this._smBreakpoint() ? 'over' : 'side'
   );
 
   public setSidenavOpen = (value: boolean) => this._sidenavOpen.set(value);
 
   private handleResize = effect(() => {
-    if (this._xsBreakpoint()) {
+    if (this._smBreakpoint()) {
       untracked(() => this._sidenavOpen.set(true));
     }
   });

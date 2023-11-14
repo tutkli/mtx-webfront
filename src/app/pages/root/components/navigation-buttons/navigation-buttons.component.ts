@@ -9,12 +9,11 @@ import {
   lucideSettings,
   lucideUser2,
 } from '@ng-icons/lucide';
-import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'mtx-navigation-buttons',
   standalone: true,
-  imports: [NgIcon, RouterLink, RouterLinkActive, NgForOf],
+  imports: [NgIcon, RouterLink, RouterLinkActive],
   providers: [
     provideIcons({
       lucideList,
@@ -24,14 +23,17 @@ import { NgForOf } from '@angular/common';
       lucideFilter,
     }),
   ],
-  template: `<button
-    *ngFor="let item of navigationItems"
-    role="button"
-    [routerLink]="item.link"
-    routerLinkActive="active-route"
-    class="navigation-button">
-    <ng-icon [name]="item.icon" size="1.5rem" />
-  </button>`,
+  template: `
+    @for (item of navigationItems; track item.link) {
+      <button
+        role="button"
+        [routerLink]="item.link"
+        routerLinkActive="active-route"
+        class="navigation-button">
+        <ng-icon [name]="item.icon" size="1.5rem" />
+      </button>
+    }
+  `,
   styles: [
     `
       .navigation-button {

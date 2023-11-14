@@ -25,8 +25,7 @@ import {
 import { useGeographic } from 'ol/proj';
 import { isJurisdictionFeature, isRequestFeature } from '@utils/map/map-features.utils';
 import { MapZoomControlsComponent } from '@shared/components/map-zoom-controls/map-zoom-controls.component';
-import { NgComponentOutlet, NgIf, NgTemplateOutlet } from '@angular/common';
-import { SidenavControlComponent } from '@shared/components/sidenav-control/sidenav-control.component';
+import { NgComponentOutlet } from '@angular/common';
 import { RequestCardComponent } from '@pages/root/pages/list/pages/requests-list/components/request-card/request-card.component';
 import { isExtentFinite } from '@utils/map/map-source.utils';
 import { Extent } from 'ol/extent';
@@ -34,28 +33,25 @@ import { Extent } from 'ol/extent';
 @Component({
   selector: 'mtx-map',
   standalone: true,
-  imports: [
-    MapZoomControlsComponent,
-    NgIf,
-    SidenavControlComponent,
-    NgComponentOutlet,
-    NgTemplateOutlet,
-  ],
+  imports: [MapZoomControlsComponent, NgComponentOutlet],
   template: `
-    <mtx-map-zoom-controls *ngIf="showControls()" [map]="map" />
+    @if (showControls()) {
+      <mtx-map-zoom-controls [map]="map" />
+    }
+
     <div id="ol-map" class="relative h-full w-full"></div>
     <div
       #requestPopup
       class="absolute min-w-[300px] shadow-sm"
       (mouseenter)="overlayHovered.set(true)"
       (mouseleave)="overlayHovered.set(false)">
-      <ng-container *ngIf="highlightedRequest()">
+      @if (highlightedRequest()) {
         <ng-container
           *ngComponentOutlet="
             RequestCardComponent;
             inputs: { request: highlightedRequest() }
           " />
-      </ng-container>
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

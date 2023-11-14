@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { NgForOf, NgIf } from '@angular/common';
 import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
 import { Jurisdiction } from '@core/models/jurisdiction.model';
 import { hostBinding } from 'ngxtension/host-binding';
@@ -12,38 +11,33 @@ import { ListSkeletonComponent } from '@pages/root/pages/list/components/list-sk
 @Component({
   selector: 'mtx-jurisdiction-list',
   standalone: true,
-  imports: [
-    NgForOf,
-    JurisdictionCardComponent,
-    ListHeaderComponent,
-    ListSkeletonComponent,
-    NgIf,
-  ],
+  imports: [JurisdictionCardComponent, ListHeaderComponent, ListSkeletonComponent],
   template: `
     <mtx-list-header
       titleRef="list.jurisdiction-list"
       [totalCountLastDays]="totalRequestCountLastDays()" />
 
-    <ng-container *ngIf="jurisdictions().length; else listSkeleton">
+    @if (jurisdictions().length) {
       <div class="flex flex-col space-y-2">
-        <mtx-jurisdiction-card
-          *ngFor="let jurisdiction of jurisdictions()"
-          (click)="selectJurisdiction(jurisdiction)"
-          (keyup.enter)="$event.preventDefault(); selectJurisdiction(jurisdiction)"
-          [jurisdiction]="jurisdiction"
-          [requestCount]="requestCountsByJurisdiction().get(jurisdiction.jurisdiction_id)"
-          [requestCountLastDays]="
-            requestCountLastDaysByJurisdiction().get(jurisdiction.jurisdiction_id)
-          "
-          [appConfiguration]="
-            appConfigurationsByJurisdiction().get(jurisdiction.jurisdiction_id)
-          " />
+        @for (jurisdiction of jurisdictions(); track jurisdiction.id) {
+          <mtx-jurisdiction-card
+            (click)="selectJurisdiction(jurisdiction)"
+            (keyup.enter)="$event.preventDefault(); selectJurisdiction(jurisdiction)"
+            [jurisdiction]="jurisdiction"
+            [requestCount]="
+              requestCountsByJurisdiction().get(jurisdiction.jurisdiction_id)
+            "
+            [requestCountLastDays]="
+              requestCountLastDaysByJurisdiction().get(jurisdiction.jurisdiction_id)
+            "
+            [appConfiguration]="
+              appConfigurationsByJurisdiction().get(jurisdiction.jurisdiction_id)
+            " />
+        }
       </div>
-    </ng-container>
-
-    <ng-template #listSkeleton>
+    } @else {
       <mtx-list-skeleton />
-    </ng-template>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

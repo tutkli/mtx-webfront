@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RequestService } from '@core/services/request/request.service';
-import { NgForOf, NgIf } from '@angular/common';
 import { ListHeaderComponent } from '@pages/root/pages/list/components/list-header/list-header.component';
 import { ListService } from '@pages/root/pages/list/services/list.service';
 import { hostBinding } from 'ngxtension/host-binding';
@@ -10,26 +9,20 @@ import { ListSkeletonComponent } from '@pages/root/pages/list/components/list-sk
 @Component({
   selector: 'mtx-requests-list',
   standalone: true,
-  imports: [
-    NgForOf,
-    ListHeaderComponent,
-    RequestCardComponent,
-    ListSkeletonComponent,
-    NgIf,
-  ],
+  imports: [ListHeaderComponent, RequestCardComponent, ListSkeletonComponent],
   template: `
     <mtx-list-header
       titleRef="list.request-list"
       [totalCountLastDays]="selectedJurisdictionLastDays()" />
-    <ng-container *ngIf="requests().length; else listSkeleton">
+    @if (requests().length) {
       <div class="flex flex-col space-y-2">
-        <mtx-request-card *ngFor="let request of requests()" [request]="request" />
+        @for (request of requests(); track request.token) {
+          <mtx-request-card [request]="request" />
+        }
       </div>
-    </ng-container>
-
-    <ng-template #listSkeleton>
+    } @else {
       <mtx-list-skeleton />
-    </ng-template>
+    }
   `,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,

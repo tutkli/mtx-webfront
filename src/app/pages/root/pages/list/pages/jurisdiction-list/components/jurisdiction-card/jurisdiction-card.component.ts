@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { LowerCasePipe, NgForOf } from '@angular/common';
+import { LowerCasePipe } from '@angular/common';
 import { CardDescriptionDirective } from '@shared/ui/card/card-description.directive';
 import { CardDirective } from '@shared/ui/card/card.directive';
 import { CardTitleDirective } from '@shared/ui/card/card-title.directive';
@@ -15,7 +15,6 @@ import { TranslocoPipe } from '@ngneat/transloco';
     CardDescriptionDirective,
     CardDirective,
     CardTitleDirective,
-    NgForOf,
     ShortNumberPipe,
     TranslocoPipe,
     LowerCasePipe,

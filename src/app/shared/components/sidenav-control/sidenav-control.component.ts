@@ -8,30 +8,17 @@ import {
 } from '@ng-icons/lucide';
 import { ButtonDirective } from '@shared/ui/button/button.directive';
 import { SidenavService } from '@core/services/sidenav/sidenav.service';
-import { NgClass, NgIf } from '@angular/common';
 import { TranslocoPipe } from '@ngneat/transloco';
 import { BreakpointService } from '@core/services/breakpoint/breakpoint.service';
 
 @Component({
   selector: 'mtx-sidenav-control',
   standalone: true,
-  imports: [NgIcon, ButtonDirective, NgClass, NgIf, TranslocoPipe],
+  imports: [NgIcon, ButtonDirective, TranslocoPipe],
   providers: [
     provideIcons({ lucideChevronLeft, lucideChevronRight, lucideMap, lucideList }),
   ],
-  template: `<button
-      *ngIf="!xsBreakpoint(); else xsTemplate"
-      [class]="klass()"
-      mtxButton
-      type="background"
-      (click)="setSidenavOpen(!sidenavOpen())">
-      <ng-icon [name]="sidenavOpen() ? 'lucideChevronLeft' : 'lucideChevronRight'" />
-      <span *ngIf="!sidenavOpen()" class="ml-2">
-        {{ 'sidenav.show-list' | transloco }}
-      </span>
-    </button>
-
-    <ng-template #xsTemplate>
+  template: ` @if (smBreakpoint()) {
       <button
         [class]="xsKlass()"
         mtxButton
@@ -42,7 +29,20 @@ import { BreakpointService } from '@core/services/breakpoint/breakpoint.service'
         }}</span>
         <ng-icon [name]="sidenavOpen() ? 'lucideMap' : 'lucideList'" size="1.3rem" />
       </button>
-    </ng-template> `,
+    } @else {
+      <button
+        [class]="klass()"
+        mtxButton
+        type="background"
+        (click)="setSidenavOpen(!sidenavOpen())">
+        <ng-icon [name]="sidenavOpen() ? 'lucideChevronLeft' : 'lucideChevronRight'" />
+        @if (!sidenavOpen()) {
+          <span class="ml-2">
+            {{ 'sidenav.show-list' | transloco }}
+          </span>
+        }
+      </button>
+    }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavControlComponent {
@@ -50,7 +50,7 @@ export class SidenavControlComponent {
 
   private readonly sidenavService = inject(SidenavService);
 
-  xsBreakpoint = this.breakpointService.xs;
+  smBreakpoint = this.breakpointService.sm;
   sidenavOpen = this.sidenavService.sidenavOpen;
   klass = computed(
     () =>

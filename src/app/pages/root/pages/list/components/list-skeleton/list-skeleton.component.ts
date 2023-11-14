@@ -1,17 +1,21 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CardSkeletonComponent } from '@shared/components/card-skeleton/card-skeleton.component';
-import { Repeat } from 'ngxtension/repeat';
+import { arrayAttribute } from '@utils/transforms/array-attribute';
 
 @Component({
   selector: 'mtx-list-skeleton',
   standalone: true,
-  imports: [CardSkeletonComponent, Repeat],
+  imports: [CardSkeletonComponent],
   template: `
     <div class="relative flex flex-col space-y-2">
-      <mtx-card-skeleton *ngFor="let i; repeat: 5" />
+      @for (i of repetitions; track $index) {
+        <mtx-card-skeleton />
+      }
       <div class="absolute -bottom-10 h-24 w-full bg-background blur-lg"></div>
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ListSkeletonComponent {}
+export class ListSkeletonComponent {
+  @Input({ transform: arrayAttribute }) repetitions = arrayAttribute(5);
+}

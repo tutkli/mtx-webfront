@@ -11,7 +11,6 @@ import { ButtonDirective } from '@shared/ui/button/button.directive';
 import { SidenavService } from '@core/services/sidenav/sidenav.service';
 import { SidenavControlComponent } from '@shared/components/sidenav-control/sidenav-control.component';
 import { JurisdictionService } from '@core/services/jurisdiction/jurisdiction.service';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'mtx-root-layout',
@@ -25,19 +24,16 @@ import { NgIf } from '@angular/common';
     NgIcon,
     ButtonDirective,
     SidenavControlComponent,
-    NgIf,
   ],
   providers: [provideIcons({ lucideChevronLeft })],
   template: `
     <div class="flex h-screen w-screen flex-col">
       <mtx-toolbar color="primary" class="gap-4 py-2">
-        <button
-          *ngIf="selectedJurisdiction() && jurisdictions().length > 1"
-          mtxButton
-          (click)="unselectJurisdiction()"
-          class="h-8 w-8">
-          <ng-icon name="lucideChevronLeft" size="1.5rem" />
-        </button>
+        @if (selectedJurisdiction() && jurisdictions().length > 1) {
+          <button mtxButton (click)="unselectJurisdiction()" class="h-8 w-8">
+            <ng-icon name="lucideChevronLeft" size="1.5rem" />
+          </button>
+        }
 
         <img
           [src]="
@@ -54,7 +50,7 @@ import { NgIf } from '@angular/common';
             : DEFAULT_MTC.title
         }}</span>
       </mtx-toolbar>
-      <mat-drawer-container autosize class="box-border h-[calc(100%-46px)]">
+      <mat-drawer-container class="box-border h-[calc(100%-46px)]">
         <mat-drawer
           [mode]="sidenavMode()"
           [opened]="sidenavOpen()"
@@ -70,7 +66,6 @@ import { NgIf } from '@angular/common';
 
     <mtx-sidenav-control />
   `,
-  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RootLayoutComponent {
