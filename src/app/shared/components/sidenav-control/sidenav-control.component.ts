@@ -9,7 +9,7 @@ import {
 import { ButtonDirective } from '@shared/ui/button/button.directive';
 import { SidenavService } from '@core/services/sidenav/sidenav.service';
 import { NgClass, NgIf } from '@angular/common';
-import { xsBreakpoint } from '@utils/breakpoint-observer';
+import { breakpointObserver } from '@utils/breakpoint-observer';
 import { TranslocoPipe } from '@ngneat/transloco';
 
 @Component({
@@ -47,8 +47,8 @@ import { TranslocoPipe } from '@ngneat/transloco';
 })
 export class SidenavControlComponent {
   private readonly sidenavService = inject(SidenavService);
-  protected readonly xsBreakpoint = xsBreakpoint;
 
+  xsBreakpoint = breakpointObserver.smallerOrEqual('sm');
   sidenavOpen = this.sidenavService.sidenavOpen;
   klass = computed(
     () =>
